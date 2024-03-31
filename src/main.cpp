@@ -86,7 +86,7 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
         }
         unlocked.push_back({});
         for (int i = 1; i <= 6; i++) {
-            if (gameManager->isIconUnlocked(i, (IconType)101)) unlocked.back().push_back(i);
+            if (gameManager->isIconUnlocked(i, IconType::ShipFire)) unlocked.back().push_back(i);
         }
         return true;
     }
@@ -100,7 +100,9 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
                 gameManager->setPlayerFrame(num);
                 m_iconPages[IconType::Cube] = (num - 1) / 36;
                 if (update) {
+                    gameManager->m_playerIconType = IconType::Cube;
                     m_playerObject->updatePlayerFrame(num, IconType::Cube);
+                    m_playerObject->setScale(1.6f);
                     m_selectedIconType = IconType::Cube;
                     m_iconID = num;
                 }
@@ -110,7 +112,9 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
                 gameManager->setPlayerShip(num);
                 m_iconPages[IconType::Ship] = (num - 1) / 36;
                 if (update) {
+                    gameManager->m_playerIconType = IconType::Ship;
                     m_playerObject->updatePlayerFrame(num, IconType::Ship);
+                    m_playerObject->setScale(1.6f);
                     m_selectedIconType = IconType::Ship;
                     m_iconID = num;
                 }
@@ -120,7 +124,9 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
                 gameManager->setPlayerBall(num);
                 m_iconPages[IconType::Ball] = (num - 1) / 36;
                 if (update) {
+                    gameManager->m_playerIconType = IconType::Ball;
                     m_playerObject->updatePlayerFrame(num, IconType::Ball);
+                    m_playerObject->setScale(1.6f);
                     m_selectedIconType = IconType::Ball;
                     m_iconID = num;
                 }
@@ -130,7 +136,9 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
                 gameManager->setPlayerBird(num);
                 m_iconPages[IconType::Ufo] = (num - 1) / 36;
                 if (update) {
+                    gameManager->m_playerIconType = IconType::Ufo;
                     m_playerObject->updatePlayerFrame(num, IconType::Ufo);
+                    m_playerObject->setScale(1.6f);
                     m_selectedIconType = IconType::Ufo;
                     m_iconID = num;
                 }
@@ -140,7 +148,9 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
                 gameManager->setPlayerDart(num);
                 m_iconPages[IconType::Wave] = (num - 1) / 36;
                 if (update) {
+                    gameManager->m_playerIconType = IconType::Wave;
                     m_playerObject->updatePlayerFrame(num, IconType::Wave);
+                    m_playerObject->setScale(1.6f);
                     m_selectedIconType = IconType::Wave;
                     m_iconID = num;
                 }
@@ -150,7 +160,9 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
                 gameManager->setPlayerRobot(num);
                 m_iconPages[IconType::Robot] = (num - 1) / 36;
                 if (update) {
+                    gameManager->m_playerIconType = IconType::Robot;
                     m_playerObject->updatePlayerFrame(num, IconType::Robot);
+                    m_playerObject->setScale(1.6f);
                     m_selectedIconType = IconType::Robot;
                     m_iconID = num;
                 }
@@ -160,7 +172,9 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
                 gameManager->setPlayerSpider(num);
                 m_iconPages[IconType::Spider] = (num - 1) / 36;
                 if (update) {
+                    gameManager->m_playerIconType = IconType::Spider;
                     m_playerObject->updatePlayerFrame(num, IconType::Spider);
+                    m_playerObject->setScale(1.6f);
                     m_selectedIconType = IconType::Spider;
                     m_iconID = num;
                 }
@@ -170,7 +184,9 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
                 gameManager->setPlayerSwing(num);
                 m_iconPages[IconType::Swing] = (num - 1) / 36;
                 if (update) {
+                    gameManager->m_playerIconType = IconType::Swing;
                     m_playerObject->updatePlayerFrame(num, IconType::Swing);
+                    m_playerObject->setScale(1.6f);
                     m_selectedIconType = IconType::Swing;
                     m_iconID = num;
                 }
@@ -180,7 +196,9 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
                 gameManager->setPlayerJetpack(num);
                 m_iconPages[IconType::Jetpack] = 0;
                 if (update) {
+                    gameManager->m_playerIconType = IconType::Jetpack;
                     m_playerObject->updatePlayerFrame(num, IconType::Jetpack);
+                    m_playerObject->setScale(1.5f);
                     m_selectedIconType = IconType::Jetpack;
                     m_iconID = num;
                 }
@@ -203,14 +221,14 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
                     m_iconID = num;
                 }
                 gameManager->setPlayerShipStreak(unlocked[13][randomNumber(0, unlocked[13].size() - 1)]);
-                m_iconPages[(IconType)101] = 0;
+                m_iconPages[IconType::ShipFire] = 0;
                 break;
         }
     }
 
     void onRandomize(CCObject* sender) {
         randomize(m_iconType, true);
-        setupPage(-1, m_iconType);
+        setupPage(m_iconPages[m_iconType], m_iconType);
     }
 
     void onRandomizeAll(CCObject* sender) {
@@ -268,11 +286,13 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
                             playerFrame = gameManager->getPlayerJetpack();
                             break;
                     }
+                    gameManager->m_playerIconType = randomType;
                     m_playerObject->setColor(gameManager->colorForIdx(gameManager->getPlayerColor()));
                     m_playerObject->setSecondColor(gameManager->colorForIdx(gameManager->getPlayerColor2()));
                     if (gameManager->getPlayerGlow()) m_playerObject->setGlowOutline(gameManager->colorForIdx(gameManager->getPlayerGlowColor()));
                     else m_playerObject->disableGlowOutline();
                     m_playerObject->updatePlayerFrame(playerFrame, randomType);
+                    m_playerObject->setScale(randomType == IconType::Jetpack ? 1.5f : 1.6f);
                     m_selectedIconType = randomType;
                     m_iconID = playerFrame;
                     selectTab(randomType);
