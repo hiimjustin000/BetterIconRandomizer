@@ -75,7 +75,7 @@ void BIRSelectPopup::setupUnlocked() {
 BIRSelectPopup* BIRSelectPopup::create() {
     auto ret = new BIRSelectPopup();
 
-    if (ret && ret->init(350.0f, 150.0f, "")) {
+    if (ret && ret->initAnchored(350.0f, 150.0f, "")) {
         ret->autorelease();
         return ret;
     }
