@@ -2,7 +2,7 @@
 
 using namespace geode::prelude;
 
-class BIRSelectPopup : public geode::Popup<std::string const&> {
+class BIRSelectPopup : public geode::Popup<> {
 public:
     inline static std::vector<std::vector<int>> unlocked = {};
 
@@ -25,7 +25,7 @@ public:
     static int randomNumber(int, int);
     static void setupUnlocked();
     static BIRSelectPopup* create();
-    bool setup(std::string const&) override;
+    bool setup() override;
     void randomize(UnlockType unlockType) {
         randomize(unlockType, false);
     }

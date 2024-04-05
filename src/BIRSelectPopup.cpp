@@ -75,7 +75,7 @@ void BIRSelectPopup::setupUnlocked() {
 BIRSelectPopup* BIRSelectPopup::create() {
     auto ret = new BIRSelectPopup();
 
-    if (ret && ret->init(350.0f, 150.0f, "")) {
+    if (ret && ret->initAnchored(350.0f, 150.0f)) {
         ret->autorelease();
         return ret;
     }
@@ -84,8 +84,7 @@ BIRSelectPopup* BIRSelectPopup::create() {
     return nullptr;
 }
 
-bool BIRSelectPopup::setup(std::string const&) {
-    auto winSize = CCDirector::sharedDirector()->getWinSize();
+bool BIRSelectPopup::setup() {
     setTitle("Select Modes to Randomize");
 
     // Bear with me Copilot, I'm doing this 11 times
@@ -94,7 +93,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     auto iconSpriteOn = CCSprite::createWithSpriteFrameName("gj_iconBtn_on_001.png");
     iconSpriteOn->setScale(0.75f);
     m_iconToggler = CCMenuItemToggler::create(iconSpriteOff, iconSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
-    m_iconToggler->setPosition(-150.0f, 25.0f);
+    m_iconToggler->setPosition(25.0f, 100.0f);
     m_buttonMenu->addChild(m_iconToggler);
 
     auto shipSpriteOff = CCSprite::createWithSpriteFrameName("gj_shipBtn_off_001.png");
@@ -102,7 +101,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     auto shipSpriteOn = CCSprite::createWithSpriteFrameName("gj_shipBtn_on_001.png");
     shipSpriteOn->setScale(0.75f);
     m_shipToggler = CCMenuItemToggler::create(shipSpriteOff, shipSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
-    m_shipToggler->setPosition(-120.0f, 25.0f);
+    m_shipToggler->setPosition(55.0f, 100.0f);
     m_buttonMenu->addChild(m_shipToggler);
 
     auto ballSpriteOff = CCSprite::createWithSpriteFrameName("gj_ballBtn_off_001.png");
@@ -110,7 +109,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     auto ballSpriteOn = CCSprite::createWithSpriteFrameName("gj_ballBtn_on_001.png");
     ballSpriteOn->setScale(0.75f);
     m_ballToggler = CCMenuItemToggler::create(ballSpriteOff, ballSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
-    m_ballToggler->setPosition(-90.0f, 25.0f);
+    m_ballToggler->setPosition(85.0f, 100.0f);
     m_buttonMenu->addChild(m_ballToggler);
 
     auto birdSpriteOff = CCSprite::createWithSpriteFrameName("gj_birdBtn_off_001.png");
@@ -118,7 +117,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     auto birdSpriteOn = CCSprite::createWithSpriteFrameName("gj_birdBtn_on_001.png");
     birdSpriteOn->setScale(0.75f);
     m_birdToggler = CCMenuItemToggler::create(birdSpriteOff, birdSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
-    m_birdToggler->setPosition(-60.0f, 25.0f);
+    m_birdToggler->setPosition(115.0f, 100.0f);
     m_buttonMenu->addChild(m_birdToggler);
 
     auto dartSpriteOff = CCSprite::createWithSpriteFrameName("gj_dartBtn_off_001.png");
@@ -126,7 +125,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     auto dartSpriteOn = CCSprite::createWithSpriteFrameName("gj_dartBtn_on_001.png");
     dartSpriteOn->setScale(0.75f);
     m_dartToggler = CCMenuItemToggler::create(dartSpriteOff, dartSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
-    m_dartToggler->setPosition(-30.0f, 25.0f);
+    m_dartToggler->setPosition(145.0f, 100.0f);
     m_buttonMenu->addChild(m_dartToggler);
 
     auto robotSpriteOff = CCSprite::createWithSpriteFrameName("gj_robotBtn_off_001.png");
@@ -134,7 +133,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     auto robotSpriteOn = CCSprite::createWithSpriteFrameName("gj_robotBtn_on_001.png");
     robotSpriteOn->setScale(0.75f);
     m_robotToggler = CCMenuItemToggler::create(robotSpriteOff, robotSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
-    m_robotToggler->setPosition(0.0f, 25.0f);
+    m_robotToggler->setPosition(175.0f, 100.0f);
     m_buttonMenu->addChild(m_robotToggler);
 
     auto spiderSpriteOff = CCSprite::createWithSpriteFrameName("gj_spiderBtn_off_001.png");
@@ -142,7 +141,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     auto spiderSpriteOn = CCSprite::createWithSpriteFrameName("gj_spiderBtn_on_001.png");
     spiderSpriteOn->setScale(0.75f);
     m_spiderToggler = CCMenuItemToggler::create(spiderSpriteOff, spiderSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
-    m_spiderToggler->setPosition(30.0f, 25.0f);
+    m_spiderToggler->setPosition(205.0f, 100.0f);
     m_buttonMenu->addChild(m_spiderToggler);
 
     auto swingSpriteOff = CCSprite::createWithSpriteFrameName("gj_swingBtn_off_001.png");
@@ -150,7 +149,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     auto swingSpriteOn = CCSprite::createWithSpriteFrameName("gj_swingBtn_on_001.png");
     swingSpriteOn->setScale(0.75f);
     m_swingToggler = CCMenuItemToggler::create(swingSpriteOff, swingSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
-    m_swingToggler->setPosition(60.0f, 25.0f);
+    m_swingToggler->setPosition(235.0f, 100.0f);
     m_buttonMenu->addChild(m_swingToggler);
 
     auto jetpackSpriteOff = CCSprite::createWithSpriteFrameName("gj_jetpackBtn_off_001.png");
@@ -158,7 +157,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     auto jetpackSpriteOn = CCSprite::createWithSpriteFrameName("gj_jetpackBtn_on_001.png");
     jetpackSpriteOn->setScale(0.75f);
     m_jetpackToggler = CCMenuItemToggler::create(jetpackSpriteOff, jetpackSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
-    m_jetpackToggler->setPosition(90.0f, 25.0f);
+    m_jetpackToggler->setPosition(265.0f, 100.0f);
     m_buttonMenu->addChild(m_jetpackToggler);
 
     auto streakSpriteOff = CCSprite::createWithSpriteFrameName("gj_streakBtn_off_001.png");
@@ -166,7 +165,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     auto streakSpriteOn = CCSprite::createWithSpriteFrameName("gj_streakBtn_on_001.png");
     streakSpriteOn->setScale(0.75f);
     m_streakToggler = CCMenuItemToggler::create(streakSpriteOff, streakSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
-    m_streakToggler->setPosition(120.0f, 25.0f);
+    m_streakToggler->setPosition(295.0f, 100.0f);
     m_buttonMenu->addChild(m_streakToggler);
 
     auto explosionSpriteOff = CCSprite::createWithSpriteFrameName("gj_explosionBtn_off_001.png");
@@ -174,7 +173,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     auto explosionSpriteOn = CCSprite::createWithSpriteFrameName("gj_explosionBtn_on_001.png");
     explosionSpriteOn->setScale(0.75f);
     m_explosionToggler = CCMenuItemToggler::create(explosionSpriteOff, explosionSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
-    m_explosionToggler->setPosition(150.0f, 25.0f);
+    m_explosionToggler->setPosition(325.0f, 100.0f);
     m_buttonMenu->addChild(m_explosionToggler);
 
     // Okay here comes the color toggles, which are way different
@@ -201,7 +200,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     color1SpriteOff->setPosition(color1DarkSprite->getPosition());
     color1LabelOff->setPosition(color1SpriteOff->getPosition());
     color1LabelOn->setPosition(color1SpriteOn->getPosition());
-    m_colorToggler1->setPosition(-50.0f, -10.0f);
+    m_colorToggler1->setPosition(125.0f, 65.0f);
     m_buttonMenu->addChild(m_colorToggler1);
 
     auto color2 = gameManager->colorForIdx(gameManager->getPlayerColor2());
@@ -225,7 +224,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     color2SpriteOff->setPosition(color2DarkSprite->getPosition());
     color2LabelOff->setPosition(color2SpriteOff->getPosition());
     color2LabelOn->setPosition(color2SpriteOn->getPosition());
-    m_colorToggler2->setPosition(0.0f, -10.0f);
+    m_colorToggler2->setPosition(175.0f, 65.0f);
     m_buttonMenu->addChild(m_colorToggler2);
 
     auto color3 = gameManager->colorForIdx(gameManager->getPlayerGlowColor());
@@ -249,7 +248,7 @@ bool BIRSelectPopup::setup(std::string const&) {
     color3SpriteOff->setPosition(color3DarkSprite->getPosition());
     color3LabelOff->setPosition(color3SpriteOff->getPosition());
     color3LabelOn->setPosition(color3SpriteOn->getPosition());
-    m_colorToggler3->setPosition(50.0f, -10.0f);
+    m_colorToggler3->setPosition(225.0f, 65.0f);
     m_buttonMenu->addChild(m_colorToggler3);
 
     auto randomizeButton = CCMenuItemSpriteExtra::create(
@@ -257,7 +256,7 @@ bool BIRSelectPopup::setup(std::string const&) {
         this,
         menu_selector(BIRSelectPopup::onRandomize)
     );
-    randomizeButton->setPositionY(-50.0f);
+    randomizeButton->setPosition(175.0f, 25.0f);
     m_buttonMenu->addChild(randomizeButton);
     return true;
 }
