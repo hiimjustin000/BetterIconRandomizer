@@ -415,10 +415,7 @@ void BIRSelectPopup::onRandomize(CCObject*) {
     }
 
     gameManager->m_playerIconType = randomType;
-    m_garageLayer->m_playerObject->setColor(gameManager->colorForIdx(gameManager->getPlayerColor()));
-    m_garageLayer->m_playerObject->setSecondColor(gameManager->colorForIdx(gameManager->getPlayerColor2()));
-    if (gameManager->getPlayerGlow()) m_garageLayer->m_playerObject->setGlowOutline(gameManager->colorForIdx(gameManager->getPlayerGlowColor()));
-    else m_garageLayer->m_playerObject->disableGlowOutline();
+    m_garageLayer->updatePlayerColors();
     m_garageLayer->m_playerObject->updatePlayerFrame(playerFrame, randomType);
     m_garageLayer->m_playerObject->setScale(randomType == IconType::Jetpack ? 1.5f : 1.6f);
     m_garageLayer->m_selectedIconType = randomType;

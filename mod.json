@@ -2,9 +2,10 @@
     "geode": "2.0.0-beta.23",
     "gd": {
         "android": "2.205",
-        "win": "2.204"
+        "win": "2.204",
+        "mac": "2.200"
     },
-    "version": "v1.1.1",
+    "version": "v1.2.0",
     "id": "hiimjustin000.better_icon_randomizer",
     "name": "Better Icon Randomizer",
     "developer": "hiimjustin000",
@@ -13,7 +14,7 @@
     "dependencies": [
         {
             "id": "geode.node-ids",
-            "version": ">=v1.8.1",
+            "version": ">=v1.9.1",
             "importance": "required"
         }
     ],
@@ -21,5 +22,10 @@
         "sprites": [
             "resources/*.png"
         ]
+    },
+    "settings": {
+        "randomize-button-color": {
+            "type": "custom"
+        }
     }
 }

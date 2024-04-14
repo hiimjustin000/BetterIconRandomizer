@@ -1,6 +1,4 @@
-#include <Geode/Geode.hpp>
-
-using namespace geode::prelude;
+#include "ButtonColor.hpp"
 
 class BIRSelectPopup : public geode::Popup<> {
 public:
