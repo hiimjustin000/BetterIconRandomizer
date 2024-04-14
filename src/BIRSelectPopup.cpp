@@ -92,7 +92,7 @@ bool BIRSelectPopup::setup() {
     iconSpriteOff->setScale(0.75f);
     auto iconSpriteOn = CCSprite::createWithSpriteFrameName("gj_iconBtn_on_001.png");
     iconSpriteOn->setScale(0.75f);
-    m_iconToggler = CCMenuItemToggler::create(iconSpriteOff, iconSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_iconToggler = CCMenuItemToggler::create(iconSpriteOff, iconSpriteOn, this, menu_selector(BIRSelectPopup::onIconToggle));
     m_iconToggler->setPosition(25.0f, 100.0f);
     m_buttonMenu->addChild(m_iconToggler);
 
@@ -100,7 +100,7 @@ bool BIRSelectPopup::setup() {
     shipSpriteOff->setScale(0.75f);
     auto shipSpriteOn = CCSprite::createWithSpriteFrameName("gj_shipBtn_on_001.png");
     shipSpriteOn->setScale(0.75f);
-    m_shipToggler = CCMenuItemToggler::create(shipSpriteOff, shipSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_shipToggler = CCMenuItemToggler::create(shipSpriteOff, shipSpriteOn, this, menu_selector(BIRSelectPopup::onIconToggle));
     m_shipToggler->setPosition(55.0f, 100.0f);
     m_buttonMenu->addChild(m_shipToggler);
 
@@ -108,7 +108,7 @@ bool BIRSelectPopup::setup() {
     ballSpriteOff->setScale(0.75f);
     auto ballSpriteOn = CCSprite::createWithSpriteFrameName("gj_ballBtn_on_001.png");
     ballSpriteOn->setScale(0.75f);
-    m_ballToggler = CCMenuItemToggler::create(ballSpriteOff, ballSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_ballToggler = CCMenuItemToggler::create(ballSpriteOff, ballSpriteOn, this, menu_selector(BIRSelectPopup::onIconToggle));
     m_ballToggler->setPosition(85.0f, 100.0f);
     m_buttonMenu->addChild(m_ballToggler);
 
@@ -116,7 +116,7 @@ bool BIRSelectPopup::setup() {
     birdSpriteOff->setScale(0.75f);
     auto birdSpriteOn = CCSprite::createWithSpriteFrameName("gj_birdBtn_on_001.png");
     birdSpriteOn->setScale(0.75f);
-    m_birdToggler = CCMenuItemToggler::create(birdSpriteOff, birdSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_birdToggler = CCMenuItemToggler::create(birdSpriteOff, birdSpriteOn, this, menu_selector(BIRSelectPopup::onIconToggle));
     m_birdToggler->setPosition(115.0f, 100.0f);
     m_buttonMenu->addChild(m_birdToggler);
 
@@ -124,7 +124,7 @@ bool BIRSelectPopup::setup() {
     dartSpriteOff->setScale(0.75f);
     auto dartSpriteOn = CCSprite::createWithSpriteFrameName("gj_dartBtn_on_001.png");
     dartSpriteOn->setScale(0.75f);
-    m_dartToggler = CCMenuItemToggler::create(dartSpriteOff, dartSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_dartToggler = CCMenuItemToggler::create(dartSpriteOff, dartSpriteOn, this, menu_selector(BIRSelectPopup::onIconToggle));
     m_dartToggler->setPosition(145.0f, 100.0f);
     m_buttonMenu->addChild(m_dartToggler);
 
@@ -132,7 +132,7 @@ bool BIRSelectPopup::setup() {
     robotSpriteOff->setScale(0.75f);
     auto robotSpriteOn = CCSprite::createWithSpriteFrameName("gj_robotBtn_on_001.png");
     robotSpriteOn->setScale(0.75f);
-    m_robotToggler = CCMenuItemToggler::create(robotSpriteOff, robotSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_robotToggler = CCMenuItemToggler::create(robotSpriteOff, robotSpriteOn, this, menu_selector(BIRSelectPopup::onIconToggle));
     m_robotToggler->setPosition(175.0f, 100.0f);
     m_buttonMenu->addChild(m_robotToggler);
 
@@ -140,7 +140,7 @@ bool BIRSelectPopup::setup() {
     spiderSpriteOff->setScale(0.75f);
     auto spiderSpriteOn = CCSprite::createWithSpriteFrameName("gj_spiderBtn_on_001.png");
     spiderSpriteOn->setScale(0.75f);
-    m_spiderToggler = CCMenuItemToggler::create(spiderSpriteOff, spiderSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_spiderToggler = CCMenuItemToggler::create(spiderSpriteOff, spiderSpriteOn, this, menu_selector(BIRSelectPopup::onIconToggle));
     m_spiderToggler->setPosition(205.0f, 100.0f);
     m_buttonMenu->addChild(m_spiderToggler);
 
@@ -148,7 +148,7 @@ bool BIRSelectPopup::setup() {
     swingSpriteOff->setScale(0.75f);
     auto swingSpriteOn = CCSprite::createWithSpriteFrameName("gj_swingBtn_on_001.png");
     swingSpriteOn->setScale(0.75f);
-    m_swingToggler = CCMenuItemToggler::create(swingSpriteOff, swingSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_swingToggler = CCMenuItemToggler::create(swingSpriteOff, swingSpriteOn, this, menu_selector(BIRSelectPopup::onIconToggle));
     m_swingToggler->setPosition(235.0f, 100.0f);
     m_buttonMenu->addChild(m_swingToggler);
 
@@ -156,7 +156,7 @@ bool BIRSelectPopup::setup() {
     jetpackSpriteOff->setScale(0.75f);
     auto jetpackSpriteOn = CCSprite::createWithSpriteFrameName("gj_jetpackBtn_on_001.png");
     jetpackSpriteOn->setScale(0.75f);
-    m_jetpackToggler = CCMenuItemToggler::create(jetpackSpriteOff, jetpackSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_jetpackToggler = CCMenuItemToggler::create(jetpackSpriteOff, jetpackSpriteOn, this, menu_selector(BIRSelectPopup::onIconToggle));
     m_jetpackToggler->setPosition(265.0f, 100.0f);
     m_buttonMenu->addChild(m_jetpackToggler);
 
@@ -164,7 +164,7 @@ bool BIRSelectPopup::setup() {
     streakSpriteOff->setScale(0.75f);
     auto streakSpriteOn = CCSprite::createWithSpriteFrameName("gj_streakBtn_on_001.png");
     streakSpriteOn->setScale(0.75f);
-    m_streakToggler = CCMenuItemToggler::create(streakSpriteOff, streakSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_streakToggler = CCMenuItemToggler::create(streakSpriteOff, streakSpriteOn, this, menu_selector(BIRSelectPopup::onSpecialToggle));
     m_streakToggler->setPosition(295.0f, 100.0f);
     m_buttonMenu->addChild(m_streakToggler);
 
@@ -172,7 +172,7 @@ bool BIRSelectPopup::setup() {
     explosionSpriteOff->setScale(0.75f);
     auto explosionSpriteOn = CCSprite::createWithSpriteFrameName("gj_explosionBtn_on_001.png");
     explosionSpriteOn->setScale(0.75f);
-    m_explosionToggler = CCMenuItemToggler::create(explosionSpriteOff, explosionSpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_explosionToggler = CCMenuItemToggler::create(explosionSpriteOff, explosionSpriteOn, this, menu_selector(BIRSelectPopup::onSpecialToggle));
     m_explosionToggler->setPosition(325.0f, 100.0f);
     m_buttonMenu->addChild(m_explosionToggler);
 
@@ -196,7 +196,7 @@ bool BIRSelectPopup::setup() {
     auto color1SpriteOn = CCSprite::createWithSpriteFrameName("player_special_01_001.png");
     color1SpriteOn->setColor(color1);
     color1SpriteOn->addChild(color1LabelOn);
-    m_colorToggler1 = CCMenuItemToggler::create(color1DarkSprite, color1SpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_colorToggler1 = CCMenuItemToggler::create(color1DarkSprite, color1SpriteOn, this, menu_selector(BIRSelectPopup::onColorToggle));
     color1SpriteOff->setPosition(color1DarkSprite->getPosition());
     color1LabelOff->setPosition(color1SpriteOff->getPosition());
     color1LabelOn->setPosition(color1SpriteOn->getPosition());
@@ -220,7 +220,7 @@ bool BIRSelectPopup::setup() {
     auto color2SpriteOn = CCSprite::createWithSpriteFrameName("player_special_01_001.png");
     color2SpriteOn->setColor(color2);
     color2SpriteOn->addChild(color2LabelOn);
-    m_colorToggler2 = CCMenuItemToggler::create(color2DarkSprite, color2SpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_colorToggler2 = CCMenuItemToggler::create(color2DarkSprite, color2SpriteOn, this, menu_selector(BIRSelectPopup::onColorToggle));
     color2SpriteOff->setPosition(color2DarkSprite->getPosition());
     color2LabelOff->setPosition(color2SpriteOff->getPosition());
     color2LabelOn->setPosition(color2SpriteOn->getPosition());
@@ -244,12 +244,54 @@ bool BIRSelectPopup::setup() {
     auto color3SpriteOn = CCSprite::createWithSpriteFrameName("player_special_01_001.png");
     color3SpriteOn->setColor(color3);
     color3SpriteOn->addChild(color3LabelOn);
-    m_colorToggler3 = CCMenuItemToggler::create(color3DarkSprite, color3SpriteOn, this, menu_selector(BIRSelectPopup::onToggle));
+    m_colorToggler3 = CCMenuItemToggler::create(color3DarkSprite, color3SpriteOn, this, menu_selector(BIRSelectPopup::onColorToggle));
     color3SpriteOff->setPosition(color3DarkSprite->getPosition());
     color3LabelOff->setPosition(color3SpriteOff->getPosition());
     color3LabelOn->setPosition(color3SpriteOn->getPosition());
     m_colorToggler3->setPosition(225.0f, 65.0f);
     m_buttonMenu->addChild(m_colorToggler3);
+
+    auto allIconsLabel = CCLabelBMFont::create("Icons", "bigFont.fnt");
+    allIconsLabel->setScale(0.5f);
+    allIconsLabel->setAnchorPoint({ 1.0f, 0.5f });
+    allIconsLabel->setPosition(320.0f, 70.0f);
+    m_buttonMenu->addChild(allIconsLabel);
+
+    auto allIconsSpriteOff = CCSprite::createWithSpriteFrameName("GJ_checkOff_001.png");
+    allIconsSpriteOff->setScale(0.6f);
+    auto allIconsSpriteOn = CCSprite::createWithSpriteFrameName("GJ_checkOn_001.png");
+    allIconsSpriteOn->setScale(0.6f);
+    m_allIconsToggler = CCMenuItemToggler::create(allIconsSpriteOff, allIconsSpriteOn, this, menu_selector(BIRSelectPopup::onAllIconsToggle));
+    m_allIconsToggler->setPosition(332.5f, 70.0f);
+    m_buttonMenu->addChild(m_allIconsToggler);
+
+    auto allSpecialsLabel = CCLabelBMFont::create("Special", "bigFont.fnt");
+    allSpecialsLabel->setScale(0.5f);
+    allSpecialsLabel->setAnchorPoint({ 1.0f, 0.5f });
+    allSpecialsLabel->setPosition(320.0f, 45.0f);
+    m_buttonMenu->addChild(allSpecialsLabel);
+
+    auto allSpecialsSpriteOff = CCSprite::createWithSpriteFrameName("GJ_checkOff_001.png");
+    allSpecialsSpriteOff->setScale(0.6f);
+    auto allSpecialsSpriteOn = CCSprite::createWithSpriteFrameName("GJ_checkOn_001.png");
+    allSpecialsSpriteOn->setScale(0.6f);
+    m_allSpecialsToggler = CCMenuItemToggler::create(allSpecialsSpriteOff, allSpecialsSpriteOn, this, menu_selector(BIRSelectPopup::onAllSpecialsToggle));
+    m_allSpecialsToggler->setPosition(332.5f, 45.0f);
+    m_buttonMenu->addChild(m_allSpecialsToggler);
+
+    auto allColorsLabel = CCLabelBMFont::create("Colors", "bigFont.fnt");
+    allColorsLabel->setScale(0.5f);
+    allColorsLabel->setAnchorPoint({ 1.0f, 0.5f });
+    allColorsLabel->setPosition(320.0f, 20.0f);
+    m_buttonMenu->addChild(allColorsLabel);
+
+    auto allColorsSpriteOff = CCSprite::createWithSpriteFrameName("GJ_checkOff_001.png");
+    allColorsSpriteOff->setScale(0.6f);
+    auto allColorsSpriteOn = CCSprite::createWithSpriteFrameName("GJ_checkOn_001.png");
+    allColorsSpriteOn->setScale(0.6f);
+    m_allColorsToggler = CCMenuItemToggler::create(allColorsSpriteOff, allColorsSpriteOn, this, menu_selector(BIRSelectPopup::onAllColorsToggle));
+    m_allColorsToggler->setPosition(332.5f, 20.0f);
+    m_buttonMenu->addChild(m_allColorsToggler);
 
     auto randomizeButton = CCMenuItemSpriteExtra::create(
         ButtonSprite::create("Randomize", "goldFont.fnt", "GJ_button_01.png", 0.8f),
@@ -259,6 +301,62 @@ bool BIRSelectPopup::setup() {
     randomizeButton->setPosition(175.0f, 25.0f);
     m_buttonMenu->addChild(randomizeButton);
     return true;
+}
+
+void BIRSelectPopup::onIconToggle(CCObject* sender) {
+    auto toggler = static_cast<CCMenuItemToggler*>(sender);
+    toggler->m_toggled = !toggler->m_toggled;
+    m_allIconsToggler->toggle(
+        m_iconToggler->m_toggled &&
+        m_shipToggler->m_toggled &&
+        m_ballToggler->m_toggled &&
+        m_birdToggler->m_toggled &&
+        m_dartToggler->m_toggled &&
+        m_robotToggler->m_toggled &&
+        m_spiderToggler->m_toggled &&
+        m_swingToggler->m_toggled &&
+        m_jetpackToggler->m_toggled);
+    toggler->m_toggled = !toggler->m_toggled;
+}
+
+void BIRSelectPopup::onAllIconsToggle(CCObject*) {
+    auto toggled = !m_allIconsToggler->m_toggled;
+    m_iconToggler->toggle(toggled);
+    m_shipToggler->toggle(toggled);
+    m_ballToggler->toggle(toggled);
+    m_birdToggler->toggle(toggled);
+    m_dartToggler->toggle(toggled);
+    m_robotToggler->toggle(toggled);
+    m_spiderToggler->toggle(toggled);
+    m_swingToggler->toggle(toggled);
+    m_jetpackToggler->toggle(toggled);
+}
+
+void BIRSelectPopup::onSpecialToggle(CCObject* sender) {
+    auto toggler = static_cast<CCMenuItemToggler*>(sender);
+    toggler->m_toggled = !toggler->m_toggled;
+    m_allSpecialsToggler->toggle(m_streakToggler->m_toggled && m_explosionToggler->m_toggled);
+    toggler->m_toggled = !toggler->m_toggled;
+}
+
+void BIRSelectPopup::onAllSpecialsToggle(CCObject*) {
+    auto toggled = !m_allSpecialsToggler->m_toggled;
+    m_streakToggler->toggle(toggled);
+    m_explosionToggler->toggle(toggled);
+}
+
+void BIRSelectPopup::onColorToggle(CCObject* sender) {
+    auto toggler = static_cast<CCMenuItemToggler*>(sender);
+    toggler->m_toggled = !toggler->m_toggled;
+    m_allColorsToggler->toggle(m_colorToggler1->m_toggled && m_colorToggler2->m_toggled && m_colorToggler3->m_toggled);
+    toggler->m_toggled = !toggler->m_toggled;
+}
+
+void BIRSelectPopup::onAllColorsToggle(CCObject*) {
+    auto toggled = !m_allColorsToggler->m_toggled;
+    m_colorToggler1->toggle(toggled);
+    m_colorToggler2->toggle(toggled);
+    m_colorToggler3->toggle(toggled);
 }
 
 void BIRSelectPopup::randomize(UnlockType unlockType, bool randomizeGlow) {
@@ -276,7 +374,10 @@ void BIRSelectPopup::randomize(UnlockType unlockType, bool randomizeGlow) {
             break;
         case UnlockType::Col2:
             num = unlocked[2][randomNumber(0, unlocked[2].size() - 1)];
-            if (randomizeGlow) gameManager->setPlayerColor3(num);
+            if (randomizeGlow) {
+                gameManager->setPlayerColor3(num);
+                gameManager->setPlayerGlow(randomNumber(0, 1));
+            }
             else gameManager->setPlayerColor2(num);
             break;
         case UnlockType::Ship:

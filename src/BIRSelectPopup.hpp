@@ -19,6 +19,9 @@ public:
     CCMenuItemToggler* m_colorToggler1;
     CCMenuItemToggler* m_colorToggler2;
     CCMenuItemToggler* m_colorToggler3;
+    CCMenuItemToggler* m_allIconsToggler;
+    CCMenuItemToggler* m_allSpecialsToggler;
+    CCMenuItemToggler* m_allColorsToggler;
 
     static int randomNumber(int, int);
     static void setupUnlocked();
@@ -29,5 +32,10 @@ public:
     }
     void randomize(UnlockType, bool);
     void onRandomize(CCObject*);
-    void onToggle(CCObject*) {}
+    void onIconToggle(CCObject*);
+    void onAllIconsToggle(CCObject*);
+    void onSpecialToggle(CCObject*);
+    void onAllSpecialsToggle(CCObject*);
+    void onColorToggle(CCObject*);
+    void onAllColorsToggle(CCObject*);
 };
