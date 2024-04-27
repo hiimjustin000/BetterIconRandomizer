@@ -15,8 +15,15 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
         }
 
         auto shardsMenu = getChildByID("shards-menu");
+        auto buttonSprite = CircleButtonSprite::createWithSprite(
+            "BIR_randomBtn_001.png"_spr,
+            1.0f,
+            ButtonColorSettingValue::toCircleBaseColor(ButtonColorSettingValue::randomColor),
+            CircleBaseSize::Small
+        );
+        buttonSprite->getTopNode()->setScale(1.0f);
         auto randomizeBtn = CCMenuItemSpriteExtra::create(
-            CCSprite::create(Mod::get()->expandSpriteName(("BIR_randomBtn_00" + std::to_string(static_cast<int>(ButtonColorSettingValue::randomColor)) + ".png").c_str())),
+            buttonSprite,
             this,
             menu_selector(BIRGarageLayer::onSelectRandomize)
         );

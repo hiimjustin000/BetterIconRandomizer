@@ -1,6 +1,6 @@
 #include "ButtonColor.hpp"
 
-class BIRSelectPopup : public geode::Popup<> {
+class BIRSelectPopup : public Popup<> {
 public:
     inline static std::vector<std::vector<int>> unlocked = {};
 

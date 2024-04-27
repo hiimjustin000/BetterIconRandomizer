@@ -1,5 +1,16 @@
 #include "ButtonColor.hpp"
 
+CircleBaseColor ButtonColorSettingValue::toCircleBaseColor(ButtonColor color) {
+    switch (color) {
+        case ButtonColor::Green: return CircleBaseColor::Green;
+        case ButtonColor::Pink: return CircleBaseColor::Pink;
+        case ButtonColor::Blue: return CircleBaseColor::Blue;
+        case ButtonColor::Cyan: return CircleBaseColor::Cyan;
+        case ButtonColor::Gray: return CircleBaseColor::Gray;
+        default: return CircleBaseColor::Geode;
+    }
+}
+
 bool ButtonColorSettingValue::load(matjson::Value const& json) {
     if (!json.is_number()) return false;
     m_value = json.as_int() >= 0 && json.as_int() <= 5 ? static_cast<ButtonColor>(json.as_int()) : ButtonColor::Random;
