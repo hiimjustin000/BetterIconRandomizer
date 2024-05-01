@@ -17,7 +17,6 @@ class ButtonColorSettingValue : public SettingValue {
 
 public:
     inline static ButtonColor randomColor = ButtonColor::Random;
-    static CircleBaseColor toCircleBaseColor(ButtonColor color);
 
     ButtonColorSettingValue(std::string const& key, std::string const& modID, ButtonColor value) : SettingValue(key, modID), m_value(value) {}
     bool load(matjson::Value const& json) override;
@@ -28,7 +27,6 @@ public:
 };
 
 class ButtonColorSettingNode : public SettingNode {
-    ButtonColorSettingValue* m_value;
     int m_uncommittedValue;
     float m_width;
     CCMenu* m_menu;

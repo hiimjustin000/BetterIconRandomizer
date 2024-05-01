@@ -1,16 +1,5 @@
 #include "ButtonColor.hpp"
 
-CircleBaseColor ButtonColorSettingValue::toCircleBaseColor(ButtonColor color) {
-    switch (color) {
-        case ButtonColor::Green: return CircleBaseColor::Green;
-        case ButtonColor::Pink: return CircleBaseColor::Pink;
-        case ButtonColor::Blue: return CircleBaseColor::Blue;
-        case ButtonColor::Cyan: return CircleBaseColor::Cyan;
-        case ButtonColor::Gray: return CircleBaseColor::Gray;
-        default: return CircleBaseColor::Geode;
-    }
-}
-
 bool ButtonColorSettingValue::load(matjson::Value const& json) {
     if (!json.is_number()) return false;
     m_value = json.as_int() >= 0 && json.as_int() <= 5 ? static_cast<ButtonColor>(json.as_int()) : ButtonColor::Random;
@@ -42,8 +31,35 @@ const char* buttonColorToString(ButtonColor color) {
         case ButtonColor::Blue: return "Blue";
         case ButtonColor::Cyan: return "Cyan";
         case ButtonColor::Gray: return "Gray";
+        default: return "Unknown";
     }
-    return "Unknown";
+}
+
+void colorLabel(CCLabelBMFont* label, ButtonColor color) {
+    if (color != ButtonColor::Random) {
+        for (auto fontSprite : CCArrayExt<CCSprite*>(label->getChildren())) {
+            fontSprite->setColor({ 255, 255, 255 });
+        }
+    }
+    switch (color) {
+        case ButtonColor::Random: {
+            label->setColor({ 255, 255, 255 });
+            auto fontSprites = CCArrayExt<CCSprite*>(label->getChildren());
+            fontSprites[0]->setColor({ 255, 0, 0 });
+            fontSprites[1]->setColor({ 255, 165, 0 });
+            fontSprites[2]->setColor({ 255, 255, 0 });
+            fontSprites[3]->setColor({ 0, 255, 0 });
+            fontSprites[4]->setColor({ 0, 0, 255 });
+            fontSprites[5]->setColor({ 128, 0, 128 });
+            break;
+        }
+        case ButtonColor::Green: label->setColor({ 0, 255, 0 }); break;
+        case ButtonColor::Pink: label->setColor({ 255, 0, 255 }); break;
+        case ButtonColor::Blue: label->setColor({ 0, 0, 255 }); break;
+        case ButtonColor::Cyan: label->setColor({ 0, 255, 255 }); break;
+        case ButtonColor::Gray: label->setColor({ 128, 128, 128 }); break;
+        default: label->setColor({ 255, 255, 255 }); break;
+    }
 }
 
 ButtonColorSettingNode* ButtonColorSettingNode::create(ButtonColorSettingValue* value, float width) {
@@ -77,41 +93,41 @@ bool ButtonColorSettingNode::init(ButtonColorSettingValue* value, float width) {
     auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
     infoSpr->setScale(0.6f);
     auto infoBtn = CCMenuItemSpriteExtra::create(infoSpr, this, menu_selector(ButtonColorSettingNode::onDescription));
-    infoBtn->setPosition(-m_obContentSize.width + 40.0f + m_nameLabel->getScaledContentSize().width + 15.0f, 0.0f);
+    infoBtn->setPositionX(-m_obContentSize.width + 40.0f + m_nameLabel->getScaledContentSize().width + 15.0f);
     m_menu->addChild(infoBtn);
 
     auto resetBtnSpr = CCSprite::createWithSpriteFrameName("geode.loader/reset-gold.png");
     resetBtnSpr->setScale(0.5f);
     m_resetBtn = CCMenuItemSpriteExtra::create(resetBtnSpr, this, menu_selector(ButtonColorSettingNode::onReset));
-    m_resetBtn->setPosition(-m_obContentSize.width + 40.0f + m_nameLabel->getScaledContentSize().width + 35.0f, 0.0f);
+    m_resetBtn->setPositionX(-m_obContentSize.width + 40.0f + m_nameLabel->getScaledContentSize().width + 35.0f);
     m_menu->addChild(m_resetBtn);
 
     m_menu->setTouchEnabled(true);
 
     auto bgSprite = CCScale9Sprite::create("square02b_001.png", { 0.0f, 0.0f, 80.0f, 80.0f });
-    bgSprite->setScale(0.5f);
+    bgSprite->setScale(0.325f);
     bgSprite->setColor({ 0, 0, 0 });
     bgSprite->setOpacity(75);
     bgSprite->setContentSize({ (width / 2 - 70.0f) * 2, 60.0f });
-    bgSprite->setPosition(-(width / 2 - 70.0f) / 2, 0.0f);
+    bgSprite->setPositionX(-(width / 2 - 70.0f) / 2);
     m_menu->addChild(bgSprite);
 
-    m_label = CCLabelBMFont::create("", "bigFont.fnt");
-    m_label->setPosition({ -(width / 2 - 70.0f) / 2, 0.0f });
-    m_label->limitLabelWidth(width / 2 - 70.0f, 0.5f, 0.1f);
+    m_label = CCLabelBMFont::create("", "chatFont.fnt");
+    m_label->setScale(0.5525f);
+    m_label->setPositionX(-(width / 2 - 70.0f) / 2);
     m_menu->addChild(m_label);
 
     auto decArrowSpr = CCSprite::createWithSpriteFrameName("navArrowBtn_001.png");
     decArrowSpr->setFlipX(true);
     decArrowSpr->setScale(0.3f);
     auto decArrow = CCMenuItemSpriteExtra::create(decArrowSpr, this, menu_selector(ButtonColorSettingNode::onLeftArrow));
-    decArrow->setPosition(-width / 2 + 80.f, 0.0f);
+    decArrow->setPositionX(-width / 2 + 80.f);
     m_menu->addChild(decArrow);
 
     auto incArrowSpr = CCSprite::createWithSpriteFrameName("navArrowBtn_001.png");
     incArrowSpr->setScale(0.3f);
     auto incArrow = CCMenuItemSpriteExtra::create(incArrowSpr, this, menu_selector(ButtonColorSettingNode::onRightArrow));
-    incArrow->setPosition(-10.f, 0.0f);
+    incArrow->setPositionX(-10.f);
     m_menu->addChild(incArrow);
 
     m_width = width;
@@ -125,9 +141,7 @@ void ButtonColorSettingNode::onDescription(CCObject*) {
 
 void ButtonColorSettingNode::onReset(CCObject*) {
     createQuickPopup("Reset", "Are you sure you want to <cr>reset</c> <cl>Randomize Button Color</c> to <cy>default</c>?", "Cancel", "Reset",
-        [this](auto, bool btn2) {
-            if (btn2) resetToDefault();
-        });
+        [this](auto, bool btn2) { if (btn2) resetToDefault(); });
 }
 
 void ButtonColorSettingNode::onLeftArrow(CCObject*) {
@@ -147,20 +161,22 @@ void ButtonColorSettingNode::valueChanged() {
     else m_nameLabel->setColor({ 255, 255, 255 });
     m_resetBtn->setVisible(hasNonDefaultValue());
     dispatchChanged();
-    m_label->setString(buttonColorToString(static_cast<ButtonColor>(m_uncommittedValue)));
-    m_label->limitLabelWidth(m_width / 2 - 70.0f, 0.5f, 0.1f);
+    auto buttonColor = static_cast<ButtonColor>(m_uncommittedValue);
+    m_label->setString(buttonColorToString(buttonColor));
+    colorLabel(m_label, buttonColor);
 }
 
 void ButtonColorSettingNode::commit() {
-    m_value->setValue(static_cast<ButtonColor>(m_uncommittedValue));
-    ButtonColorSettingValue::randomColor = m_value->getValue();
+    auto settingValue = static_cast<ButtonColorSettingValue*>(m_value);
+    settingValue->setValue(static_cast<ButtonColor>(m_uncommittedValue));
+    ButtonColorSettingValue::randomColor = settingValue->getValue();
     m_uncommittedValue = static_cast<int>(ButtonColorSettingValue::randomColor);
     valueChanged();
     dispatchCommitted();
 }
 
 bool ButtonColorSettingNode::hasUncommittedChanges() {
-    return static_cast<ButtonColor>(m_uncommittedValue) != m_value->getValue();
+    return static_cast<ButtonColor>(m_uncommittedValue) != static_cast<ButtonColorSettingValue*>(m_value)->getValue();
 }
 
 bool ButtonColorSettingNode::hasNonDefaultValue() {

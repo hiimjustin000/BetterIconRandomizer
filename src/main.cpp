@@ -1,6 +1,17 @@
 #include <Geode/modify/GJGarageLayer.hpp>
 #include "BIRSelectPopup.hpp"
 
+CircleBaseColor toCircleBaseColor(ButtonColor color) {
+    switch (color) {
+        case ButtonColor::Green: return CircleBaseColor::Green;
+        case ButtonColor::Pink: return CircleBaseColor::Pink;
+        case ButtonColor::Blue: return CircleBaseColor::Blue;
+        case ButtonColor::Cyan: return CircleBaseColor::Cyan;
+        case ButtonColor::Gray: return CircleBaseColor::Gray;
+        default: return CircleBaseColor::Geode;
+    }
+}
+
 $on_mod(Loaded) {
     Mod::get()->addCustomSetting<ButtonColorSettingValue>("randomize-button-color", ButtonColor::Random);
 }
@@ -18,7 +29,7 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
         auto buttonSprite = CircleButtonSprite::createWithSprite(
             "BIR_randomBtn_001.png"_spr,
             1.0f,
-            ButtonColorSettingValue::toCircleBaseColor(ButtonColorSettingValue::randomColor),
+            toCircleBaseColor(ButtonColorSettingValue::randomColor),
             CircleBaseSize::Small
         );
         buttonSprite->getTopNode()->setScale(1.0f);
