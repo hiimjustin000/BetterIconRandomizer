@@ -2,7 +2,8 @@
 
 bool ButtonColorSettingValue::load(matjson::Value const& json) {
     if (!json.is_number()) return false;
-    m_value = json.as_int() >= 0 && json.as_int() <= 5 ? static_cast<ButtonColor>(json.as_int()) : ButtonColor::Random;
+    auto value = json.as_int();
+    m_value = value >= 0 && value <= 5 ? static_cast<ButtonColor>(value) : ButtonColor::Random;
     return true;
 }
 
@@ -83,54 +84,53 @@ bool ButtonColorSettingNode::init(ButtonColorSettingValue* value, float width) {
     m_nameLabel = CCLabelBMFont::create("Randomize Button Color", "bigFont.fnt");
     m_nameLabel->setAnchorPoint({ 0.0f, 0.5f });
     m_nameLabel->limitLabelWidth(width / 2 - 50.0f, 0.5f, 0.1f);
-    m_nameLabel->setPosition({ 20.0f, m_obContentSize.height / 2 });
+    m_nameLabel->setPosition(20.0f, 20.0f);
     addChild(m_nameLabel);
 
-    m_menu = CCMenu::create();
-    m_menu->setPosition({ m_obContentSize.width - 20.0f, m_obContentSize.height / 2 });
-    addChild(m_menu);
+    auto menu = CCMenu::create();
+    menu->setPosition(width - 20.0f, 20.0f);
+    addChild(menu);
 
     auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
     infoSpr->setScale(0.6f);
     auto infoBtn = CCMenuItemSpriteExtra::create(infoSpr, this, menu_selector(ButtonColorSettingNode::onDescription));
-    infoBtn->setPositionX(-m_obContentSize.width + 40.0f + m_nameLabel->getScaledContentSize().width + 15.0f);
-    m_menu->addChild(infoBtn);
+    infoBtn->setPositionX(-width + 40.0f + m_nameLabel->getScaledContentSize().width + 15.0f);
+    menu->addChild(infoBtn);
 
     auto resetBtnSpr = CCSprite::createWithSpriteFrameName("geode.loader/reset-gold.png");
     resetBtnSpr->setScale(0.5f);
     m_resetBtn = CCMenuItemSpriteExtra::create(resetBtnSpr, this, menu_selector(ButtonColorSettingNode::onReset));
-    m_resetBtn->setPositionX(-m_obContentSize.width + 40.0f + m_nameLabel->getScaledContentSize().width + 35.0f);
-    m_menu->addChild(m_resetBtn);
+    m_resetBtn->setPositionX(-width + 40.0f + m_nameLabel->getScaledContentSize().width + 35.0f);
+    menu->addChild(m_resetBtn);
 
-    m_menu->setTouchEnabled(true);
+    menu->setTouchEnabled(true);
 
     auto bgSprite = CCScale9Sprite::create("square02b_001.png", { 0.0f, 0.0f, 80.0f, 80.0f });
     bgSprite->setScale(0.325f);
     bgSprite->setColor({ 0, 0, 0 });
     bgSprite->setOpacity(75);
     bgSprite->setContentSize({ (width / 2 - 70.0f) * 2, 60.0f });
-    bgSprite->setPositionX(-(width / 2 - 70.0f) / 2);
-    m_menu->addChild(bgSprite);
+    bgSprite->setPositionX(-width / 4 + 35.0f);
+    menu->addChild(bgSprite);
 
     m_label = CCLabelBMFont::create("", "chatFont.fnt");
     m_label->setScale(0.5525f);
-    m_label->setPositionX(-(width / 2 - 70.0f) / 2);
-    m_menu->addChild(m_label);
+    m_label->setPositionX(-width / 4 + 35.0f);
+    menu->addChild(m_label);
 
     auto decArrowSpr = CCSprite::createWithSpriteFrameName("navArrowBtn_001.png");
     decArrowSpr->setFlipX(true);
     decArrowSpr->setScale(0.3f);
     auto decArrow = CCMenuItemSpriteExtra::create(decArrowSpr, this, menu_selector(ButtonColorSettingNode::onLeftArrow));
     decArrow->setPositionX(-width / 2 + 80.f);
-    m_menu->addChild(decArrow);
+    menu->addChild(decArrow);
 
     auto incArrowSpr = CCSprite::createWithSpriteFrameName("navArrowBtn_001.png");
     incArrowSpr->setScale(0.3f);
     auto incArrow = CCMenuItemSpriteExtra::create(incArrowSpr, this, menu_selector(ButtonColorSettingNode::onRightArrow));
     incArrow->setPositionX(-10.f);
-    m_menu->addChild(incArrow);
+    menu->addChild(incArrow);
 
-    m_width = width;
     valueChanged();
     return true;
 }

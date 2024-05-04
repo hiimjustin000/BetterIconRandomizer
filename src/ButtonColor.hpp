@@ -1,7 +1,5 @@
-#include <Geode/Geode.hpp>
 #include <Geode/loader/SettingNode.hpp>
-
-using namespace geode::prelude;
+#include "BetterIconRandomizer.hpp"
 
 enum class ButtonColor {
     Random,
@@ -28,8 +26,6 @@ public:
 
 class ButtonColorSettingNode : public SettingNode {
     int m_uncommittedValue;
-    float m_width;
-    CCMenu* m_menu;
     CCLabelBMFont* m_nameLabel;
     CCMenuItemSpriteExtra* m_resetBtn;
     CCLabelBMFont* m_label;

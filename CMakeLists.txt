@@ -7,6 +7,7 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 project(BetterIconRandomizer VERSION 1.0.0)
 
 add_library(${PROJECT_NAME} SHARED
+    src/BetterIconRandomizer.cpp
     src/BIRSelectPopup.cpp
     src/ButtonColor.cpp
     src/main.cpp

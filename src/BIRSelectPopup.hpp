@@ -2,34 +2,19 @@
 
 class BIRSelectPopup : public Popup<> {
 public:
-    inline static std::vector<std::vector<int>> unlocked = {};
-
     GJGarageLayer* m_garageLayer;
-    CCMenuItemToggler* m_iconToggler;
-    CCMenuItemToggler* m_shipToggler;
-    CCMenuItemToggler* m_ballToggler;
-    CCMenuItemToggler* m_birdToggler;
-    CCMenuItemToggler* m_dartToggler;
-    CCMenuItemToggler* m_robotToggler;
-    CCMenuItemToggler* m_spiderToggler;
-    CCMenuItemToggler* m_swingToggler;
-    CCMenuItemToggler* m_jetpackToggler;
-    CCMenuItemToggler* m_streakToggler;
-    CCMenuItemToggler* m_explosionToggler;
-    CCMenuItemToggler* m_colorToggler1;
-    CCMenuItemToggler* m_colorToggler2;
-    CCMenuItemToggler* m_colorToggler3;
+    CCArray* m_iconToggles;
+    CCArray* m_specialToggles;
+    CCArray* m_colorToggles;
     CCMenuItemToggler* m_allIconsToggler;
     CCMenuItemToggler* m_allSpecialsToggler;
     CCMenuItemToggler* m_allColorsToggler;
 
-    static int randomNumber(int, int);
-    static void setupUnlocked();
     static BIRSelectPopup* create();
     bool setup() override;
-    void randomize(UnlockType unlockType) {
-        randomize(unlockType, false);
-    }
+    CCMenuItemToggler* createIconToggle(const char*, float);
+    CCMenuItemToggler* createColorToggle(const char*, float, int);
+    CCMenuItemToggler* createAllToggle(const char*, float, SEL_MenuHandler);
     void randomize(UnlockType, bool);
     void onRandomize(CCObject*);
     void onIconToggle(CCObject*);

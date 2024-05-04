@@ -22,27 +22,19 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
 
         if (ButtonColorSettingValue::randomColor == ButtonColor::Random) {
             auto color = Mod::get()->getSettingValue<ButtonColor>("randomize-button-color");
-            ButtonColorSettingValue::randomColor = color == ButtonColor::Random ? static_cast<ButtonColor>(BIRSelectPopup::randomNumber(1, 5)) : color;
+            ButtonColorSettingValue::randomColor = color == ButtonColor::Random ? static_cast<ButtonColor>(BetterIconRandomizer::randomNumber(1, 5)) : color;
         }
 
         auto shardsMenu = getChildByID("shards-menu");
-        auto buttonSprite = CircleButtonSprite::createWithSprite(
-            "BIR_randomBtn_001.png"_spr,
-            1.0f,
-            toCircleBaseColor(ButtonColorSettingValue::randomColor),
-            CircleBaseSize::Small
-        );
+        auto buttonSprite = CircleButtonSprite::createWithSprite("BIR_randomBtn_001.png"_spr, 1.0f,
+            toCircleBaseColor(ButtonColorSettingValue::randomColor), CircleBaseSize::Small);
         buttonSprite->getTopNode()->setScale(1.0f);
-        auto randomizeBtn = CCMenuItemSpriteExtra::create(
-            buttonSprite,
-            this,
-            menu_selector(BIRGarageLayer::onSelectRandomize)
-        );
+        auto randomizeBtn = CCMenuItemSpriteExtra::create(buttonSprite, this, menu_selector(BIRGarageLayer::onSelectRandomize));
         randomizeBtn->setID("select-randomize-button"_spr);
         shardsMenu->addChild(randomizeBtn);
         shardsMenu->updateLayout();
 
-        BIRSelectPopup::setupUnlocked();
+        BetterIconRandomizer::setupUnlocked();
 
         return true;
     }
