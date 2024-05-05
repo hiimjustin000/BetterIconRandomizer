@@ -1,4 +1,7 @@
 # Better Icon Randomizer Changelog
+## v1.3.1 (2024-05-05)
+- Fixed a bug where the randomize button would crash the game
+
 ## v1.3.0 (2024-05-04)
 - Rewrote the codebase to be more efficient
 - Added ship fire randomization

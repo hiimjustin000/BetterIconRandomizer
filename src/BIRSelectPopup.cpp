@@ -15,7 +15,8 @@ BIRSelectPopup* BIRSelectPopup::create() {
 bool BIRSelectPopup::setup() {
     setTitle("Select Modes to Randomize");
 
-    auto gameManager = GameManager::sharedState();
+    m_iconToggles = CCArray::create();
+    m_iconToggles->retain();
     m_iconToggles->addObject(createIconToggle("icon", 25.0f));
     m_iconToggles->addObject(createIconToggle("ship", 55.0f));
     m_iconToggles->addObject(createIconToggle("ball", 85.0f));
@@ -25,8 +26,15 @@ bool BIRSelectPopup::setup() {
     m_iconToggles->addObject(createIconToggle("spider", 205.0f));
     m_iconToggles->addObject(createIconToggle("swing", 235.0f));
     m_iconToggles->addObject(createIconToggle("jetpack", 265.0f));
+
+    m_specialToggles = CCArray::create();
+    m_specialToggles->retain();
     m_specialToggles->addObject(createIconToggle("streak", 295.0f));
     m_specialToggles->addObject(createIconToggle("explosion", 325.0f));
+
+    auto gameManager = GameManager::sharedState();
+    m_colorToggles = CCArray::create();
+    m_colorToggles->retain();
     m_colorToggles->addObject(createColorToggle("1", 125.0f, gameManager->getPlayerColor()));
     m_colorToggles->addObject(createColorToggle("2", 175.0f, gameManager->getPlayerColor2()));
     m_colorToggles->addObject(createColorToggle("G", 225.0f, gameManager->getPlayerGlowColor()));
