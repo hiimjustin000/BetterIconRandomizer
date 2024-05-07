@@ -1,4 +1,7 @@
 # Better Icon Randomizer Changelog
+## v1.3.2 (2024-05-07)
+- Small tweaks to player color display
+
 ## v1.3.1 (2024-05-05)
 - Fixed a bug where the randomize button would crash the game
 

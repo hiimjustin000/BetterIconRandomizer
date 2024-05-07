@@ -67,24 +67,24 @@ CCMenuItemToggler* BIRSelectPopup::createColorToggle(const char* label, float x,
     auto gameManager = GameManager::sharedState();
 
     auto color = gameManager->colorForIdx(colorIdx);
+    auto darkColor = ccColor3B {
+        (unsigned char)floorf(color.r * 0.6f),
+        (unsigned char)floorf(color.g * 0.6f),
+        (unsigned char)floorf(color.b * 0.6f)
+    };
     auto colorLabelOff = CCLabelBMFont::create(label, "bigFont.fnt");
     colorLabelOff->setScale(0.5f);
-    colorLabelOff->setColor(color);
+    colorLabelOff->setColor(darkColor);
     auto colorSpriteOff = CCSprite::createWithSpriteFrameName("player_special_01_001.png");
-    colorSpriteOff->setColor(color);
+    colorSpriteOff->setColor(darkColor);
     colorSpriteOff->addChild(colorLabelOff);
-    auto colorDarkSprite = CCSprite::createWithSpriteFrameName("player_special_01_001.png");
-    colorDarkSprite->setColor({ 0, 0, 0 });
-    colorDarkSprite->setOpacity(150);
-    colorDarkSprite->addChild(colorSpriteOff, -1);
     auto colorLabelOn = CCLabelBMFont::create(label, "bigFont.fnt");
     colorLabelOn->setScale(0.5f);
     colorLabelOn->setColor(color);
     auto colorSpriteOn = CCSprite::createWithSpriteFrameName("player_special_01_001.png");
     colorSpriteOn->setColor(color);
     colorSpriteOn->addChild(colorLabelOn);
-    auto toggler = CCMenuItemToggler::create(colorDarkSprite, colorSpriteOn, this, menu_selector(BIRSelectPopup::onColorToggle));
-    colorSpriteOff->setPosition(colorDarkSprite->getPosition());
+    auto toggler = CCMenuItemToggler::create(colorSpriteOff, colorSpriteOn, this, menu_selector(BIRSelectPopup::onColorToggle));
     colorLabelOff->setPosition(colorSpriteOff->getPosition());
     colorLabelOn->setPosition(colorSpriteOn->getPosition());
     toggler->setPosition(x, 65.0f);
