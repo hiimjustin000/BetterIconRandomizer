@@ -12,7 +12,7 @@ int BetterIconRandomizer::randomNumber(int start, int end) {
 }
 
 void BetterIconRandomizer::setupUnlocked() {
-    unlocked.clear();
+    for (auto& [_, vec] : unlocked) vec.clear();
 
     setupUnlockedIcons(484, IconType::Cube);
     setupUnlockedColors(UnlockType::Col1);
@@ -30,87 +30,91 @@ void BetterIconRandomizer::setupUnlocked() {
     setupUnlockedIcons(6, IconType::ShipFire);
 }
 
+UnlockType BetterIconRandomizer::iconTypeToUnlockType(IconType iconType) {
+    switch (iconType) {
+        case IconType::Cube: return UnlockType::Cube;
+        case IconType::Ship: return UnlockType::Ship;
+        case IconType::Ball: return UnlockType::Ball;
+        case IconType::Ufo: return UnlockType::Bird;
+        case IconType::Wave: return UnlockType::Dart;
+        case IconType::Robot: return UnlockType::Robot;
+        case IconType::Spider: return UnlockType::Spider;
+        case IconType::Special: return UnlockType::Streak;
+        case IconType::DeathEffect: return UnlockType::Death;
+        case IconType::Swing: return UnlockType::Swing;
+        case IconType::Jetpack: return UnlockType::Jetpack;
+        case IconType::ShipFire: return UnlockType::ShipFire;
+    }
+}
+
 void BetterIconRandomizer::setupUnlockedIcons(int amount, IconType iconType) {
     auto gameManager = GameManager::sharedState();
-    unlocked.push_back({});
+    auto& vec = unlocked[iconTypeToUnlockType(iconType)];
     for (int i = 1; i <= amount; i++) {
-        if (gameManager->isIconUnlocked(i, iconType)) unlocked.back().push_back(i);
+        if (gameManager->isIconUnlocked(i, iconType)) vec.push_back(i);
     }
 }
 
 void BetterIconRandomizer::setupUnlockedColors(UnlockType unlockType) {
     auto gameManager = GameManager::sharedState();
-    unlocked.push_back({});
+    auto& vec = unlocked[unlockType];
     for (int i = 0; i <= 106; i++) {
-        if (gameManager->isColorUnlocked(i, unlockType)) unlocked.back().push_back(i);
+        if (gameManager->isColorUnlocked(i, unlockType)) vec.push_back(i);
     }
 }
 
 int BetterIconRandomizer::randomize(UnlockType unlockType, bool randomizeGlow) {
     auto gameManager = GameManager::sharedState();
-    auto num = 0;
+    auto& vec = unlocked[unlockType];
+    auto num = vec[randomNumber(0, vec.size() - 1)];
     switch (unlockType) {
         case UnlockType::Cube:
-            num = unlocked[0][randomNumber(0, unlocked[0].size() - 1)];
             gameManager->setPlayerFrame(num);
-            break;
+            return num;
         case UnlockType::Col1:
-            num = unlocked[1][randomNumber(0, unlocked[1].size() - 1)];
             gameManager->setPlayerColor(num);
-            break;
+            return num;
         case UnlockType::Col2:
-            num = unlocked[2][randomNumber(0, unlocked[2].size() - 1)];
             if (randomizeGlow) {
                 gameManager->setPlayerColor3(num);
                 gameManager->setPlayerGlow(randomNumber(0, 1));
             }
             else gameManager->setPlayerColor2(num);
-            break;
+            return num;
         case UnlockType::Ship:
-            num = unlocked[3][randomNumber(0, unlocked[3].size() - 1)];
             gameManager->setPlayerShip(num);
-            break;
+            return num;
         case UnlockType::Ball:
-            num = unlocked[4][randomNumber(0, unlocked[4].size() - 1)];
             gameManager->setPlayerBall(num);
-            break;
+            return num;
         case UnlockType::Bird:
-            num = unlocked[5][randomNumber(0, unlocked[5].size() - 1)];
             gameManager->setPlayerBird(num);
-            break;
+            return num;
         case UnlockType::Dart:
-            num = unlocked[6][randomNumber(0, unlocked[6].size() - 1)];
             gameManager->setPlayerDart(num);
-            break;
+            return num;
         case UnlockType::Robot:
-            num = unlocked[7][randomNumber(0, unlocked[7].size() - 1)];
             gameManager->setPlayerRobot(num);
-            break;
+            return num;
         case UnlockType::Spider:
-            num = unlocked[8][randomNumber(0, unlocked[8].size() - 1)];
             gameManager->setPlayerSpider(num);
-            break;
+            return num;
         case UnlockType::Streak:
-            num = unlocked[9][randomNumber(0, unlocked[9].size() - 1)];
             gameManager->setPlayerStreak(num);
-            break;
+            return num;
         case UnlockType::Death:
-            num = unlocked[10][randomNumber(0, unlocked[10].size() - 1)];
             gameManager->setPlayerDeathEffect(num);
-            break;
+            return num;
         case UnlockType::Swing:
-            num = unlocked[11][randomNumber(0, unlocked[11].size() - 1)];
             gameManager->setPlayerSwing(num);
-            break;
+            return num;
         case UnlockType::Jetpack:
-            num = unlocked[12][randomNumber(0, unlocked[12].size() - 1)];
             gameManager->setPlayerJetpack(num);
-            break;
+            return num;
         case UnlockType::ShipFire:
-            num = unlocked[13][randomNumber(0, unlocked[13].size() - 1)];
             gameManager->setPlayerShipStreak(num);
-            break;
+            return num;
+        default:
+            return -1;
     }
-
-    return num;
 }
