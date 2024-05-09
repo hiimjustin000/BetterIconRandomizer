@@ -12,8 +12,6 @@ int BetterIconRandomizer::randomNumber(int start, int end) {
 }
 
 void BetterIconRandomizer::setupUnlocked() {
-    for (auto& [_, vec] : unlocked) vec.clear();
-
     setupUnlockedIcons(484, IconType::Cube);
     setupUnlockedColors(UnlockType::Col1);
     setupUnlockedColors(UnlockType::Col2);
@@ -50,6 +48,7 @@ UnlockType BetterIconRandomizer::iconTypeToUnlockType(IconType iconType) {
 void BetterIconRandomizer::setupUnlockedIcons(int amount, IconType iconType) {
     auto gameManager = GameManager::sharedState();
     auto& vec = unlocked[iconTypeToUnlockType(iconType)];
+    vec.clear();
     for (int i = 1; i <= amount; i++) {
         if (gameManager->isIconUnlocked(i, iconType)) vec.push_back(i);
     }
@@ -58,6 +57,7 @@ void BetterIconRandomizer::setupUnlockedIcons(int amount, IconType iconType) {
 void BetterIconRandomizer::setupUnlockedColors(UnlockType unlockType) {
     auto gameManager = GameManager::sharedState();
     auto& vec = unlocked[unlockType];
+    vec.clear();
     for (int i = 0; i <= 106; i++) {
         if (gameManager->isColorUnlocked(i, unlockType)) vec.push_back(i);
     }

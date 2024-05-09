@@ -3,9 +3,9 @@
 class BIRSelectPopup : public Popup<> {
 public:
     GJGarageLayer* m_garageLayer;
-    Ref<CCArray> m_iconToggles;
-    Ref<CCArray> m_specialToggles;
-    Ref<CCArray> m_colorToggles;
+    CCArray* m_iconToggles;
+    CCArray* m_specialToggles;
+    CCArray* m_colorToggles;
     CCMenuItemToggler* m_allIconsToggler;
     CCMenuItemToggler* m_allSpecialsToggler;
     CCMenuItemToggler* m_allColorsToggler;
@@ -23,4 +23,6 @@ public:
     void onAllSpecialsToggle(CCObject*);
     void onColorToggle(CCObject*);
     void onAllColorsToggle(CCObject*);
+
+    ~BIRSelectPopup();
 };
