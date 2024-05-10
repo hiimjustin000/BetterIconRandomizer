@@ -6,19 +6,12 @@
         "win": "2.204",
         "mac": "2.200"
     },
-    "version": "v1.3.3",
+    "version": "v1.3.4",
     "id": "hiimjustin000.better_icon_randomizer",
     "name": "Better Icon Randomizer",
     "developer": "hiimjustin000",
     "description": "A mod based on randomizing icons and colors. (Unlocked icons and colors only)",
     "repository": "https://github.com/hiimjustin000/BetterIconRandomizer",
-    "dependencies": [
-        {
-            "id": "geode.node-ids",
-            "version": ">=v1.9.1",
-            "importance": "required"
-        }
-    ],
     "resources": {
         "sprites": [
             "resources/*.png"

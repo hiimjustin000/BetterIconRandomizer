@@ -26,13 +26,16 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
         }
 
         auto shardsMenu = getChildByID("shards-menu");
+        auto nodeIds = shardsMenu != nullptr;
+        if (!shardsMenu) shardsMenu = getChildOfType<CCMenu>(this, 2);
         auto buttonSprite = CircleButtonSprite::createWithSprite("BIR_randomBtn_001.png"_spr, 1.0f,
             toCircleBaseColor(ButtonColorSettingValue::randomColor), CircleBaseSize::Small);
         buttonSprite->getTopNode()->setScale(1.0f);
         auto randomizeBtn = CCMenuItemSpriteExtra::create(buttonSprite, this, menu_selector(BIRGarageLayer::onSelectRandomize));
+        if (!nodeIds) randomizeBtn->setPosition(shardsMenu->convertToNodeSpace({ 30.0f, CCDirector::sharedDirector()->getWinSize().height - 162.0f }));
         randomizeBtn->setID("select-randomize-button"_spr);
         shardsMenu->addChild(randomizeBtn);
-        shardsMenu->updateLayout();
+        if (nodeIds) shardsMenu->updateLayout();
 
         BetterIconRandomizer::setupUnlocked();
 

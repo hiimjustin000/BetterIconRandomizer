@@ -12,20 +12,20 @@ int BetterIconRandomizer::randomNumber(int start, int end) {
 }
 
 void BetterIconRandomizer::setupUnlocked() {
-    setupUnlockedIcons(484, IconType::Cube);
+    setupUnlockedIcons(IconType::Cube);
     setupUnlockedColors(UnlockType::Col1);
     setupUnlockedColors(UnlockType::Col2);
-    setupUnlockedIcons(169, IconType::Ship);
-    setupUnlockedIcons(118, IconType::Ball);
-    setupUnlockedIcons(149, IconType::Ufo);
-    setupUnlockedIcons(96, IconType::Wave);
-    setupUnlockedIcons(68, IconType::Robot);
-    setupUnlockedIcons(69, IconType::Spider);
-    setupUnlockedIcons(7, IconType::Special);
-    setupUnlockedIcons(20, IconType::DeathEffect);
-    setupUnlockedIcons(43, IconType::Swing);
-    setupUnlockedIcons(5, IconType::Jetpack);
-    setupUnlockedIcons(6, IconType::ShipFire);
+    setupUnlockedIcons(IconType::Ship);
+    setupUnlockedIcons(IconType::Ball);
+    setupUnlockedIcons(IconType::Ufo);
+    setupUnlockedIcons(IconType::Wave);
+    setupUnlockedIcons(IconType::Robot);
+    setupUnlockedIcons(IconType::Spider);
+    setupUnlockedIcons(IconType::Special);
+    setupUnlockedIcons(IconType::DeathEffect);
+    setupUnlockedIcons(IconType::Swing);
+    setupUnlockedIcons(IconType::Jetpack);
+    setupUnlockedIcons(IconType::ShipFire);
 }
 
 UnlockType BetterIconRandomizer::iconTypeToUnlockType(IconType iconType) {
@@ -45,10 +45,28 @@ UnlockType BetterIconRandomizer::iconTypeToUnlockType(IconType iconType) {
     }
 }
 
-void BetterIconRandomizer::setupUnlockedIcons(int amount, IconType iconType) {
+int BetterIconRandomizer::countForType(IconType iconType) {
+    switch (iconType) {
+        case IconType::Cube: return 484;
+        case IconType::Ship: return 169;
+        case IconType::Ball: return 118;
+        case IconType::Ufo: return 149;
+        case IconType::Wave: return 96;
+        case IconType::Robot: return 68;
+        case IconType::Spider: return 69;
+        case IconType::Special: return 7;
+        case IconType::DeathEffect: return 20;
+        case IconType::Swing: return 43;
+        case IconType::Jetpack: return 5;
+        case IconType::ShipFire: return 6;
+    }
+}
+
+void BetterIconRandomizer::setupUnlockedIcons(IconType iconType) {
     auto gameManager = GameManager::sharedState();
     auto& vec = unlocked[iconTypeToUnlockType(iconType)];
     vec.clear();
+    auto amount = countForType(iconType);
     for (int i = 1; i <= amount; i++) {
         if (gameManager->isIconUnlocked(i, iconType)) vec.push_back(i);
     }

@@ -22,7 +22,8 @@ private:
     };
 
     static UnlockType iconTypeToUnlockType(IconType);
-    static void setupUnlockedIcons(int, IconType);
+    static int countForType(IconType);
+    static void setupUnlockedIcons(IconType);
     static void setupUnlockedColors(UnlockType);
 public:
     static int randomNumber(int, int);
