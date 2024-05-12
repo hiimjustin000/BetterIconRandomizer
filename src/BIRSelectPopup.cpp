@@ -102,7 +102,7 @@ CCMenuItemToggler* BIRSelectPopup::createAllToggle(const char* label, float y, S
     auto allLabel = CCLabelBMFont::create(label, "bigFont.fnt");
     allLabel->setScale(0.5f);
     allLabel->setAnchorPoint({ 1.0f, 0.5f });
-    allLabel->setPosition(m_mainLayer->convertToNodeSpace(m_buttonMenu->convertToWorldSpace({ 320.0f, y })));
+    allLabel->setPosition(320.0f, y);
     m_mainLayer->addChild(allLabel);
 
     auto toggler = CCMenuItemToggler::createWithStandardSprites(this, handler, 0.6f);
@@ -113,84 +113,39 @@ CCMenuItemToggler* BIRSelectPopup::createAllToggle(const char* label, float y, S
 }
 
 void BIRSelectPopup::onIconToggle(CCObject* sender) {
-    auto toggler = static_cast<CCMenuItemToggler*>(sender);
-    toggler->m_toggled = !toggler->m_toggled;
-    auto iconToggles = CCArrayExt<CCMenuItemToggler*>(m_iconToggles);
-    m_allIconsToggler->toggle(iconToggles.size() == std::count_if(iconToggles.begin(), iconToggles.end(), [](auto toggle) { return toggle->m_toggled; }));
-    toggler->m_toggled = !toggler->m_toggled;
+    onToggle(m_iconToggles, static_cast<CCMenuItemToggler*>(sender), m_allIconsToggler);
 }
 
 void BIRSelectPopup::onAllIconsToggle(CCObject*) {
-    for (auto toggler : CCArrayExt<CCMenuItemToggler*>(m_iconToggles)) {
-        toggler->toggle(!m_allIconsToggler->m_toggled);
-    }
+    onAllToggle(m_iconToggles, m_allIconsToggler);
 }
 
 void BIRSelectPopup::onSpecialToggle(CCObject* sender) {
-    auto toggler = static_cast<CCMenuItemToggler*>(sender);
-    toggler->m_toggled = !toggler->m_toggled;
-    auto specialToggles = CCArrayExt<CCMenuItemToggler*>(m_specialToggles);
-    m_allSpecialsToggler->toggle(specialToggles.size() == std::count_if(specialToggles.begin(), specialToggles.end(), [](auto toggle) { return toggle->m_toggled; }));
-    toggler->m_toggled = !toggler->m_toggled;
+    onToggle(m_specialToggles, static_cast<CCMenuItemToggler*>(sender), m_allSpecialsToggler);
 }
 
 void BIRSelectPopup::onAllSpecialsToggle(CCObject*) {
-    for (auto toggler : CCArrayExt<CCMenuItemToggler*>(m_specialToggles)) {
-        toggler->toggle(!m_allSpecialsToggler->m_toggled);
-    }
+    onAllToggle(m_specialToggles, m_allSpecialsToggler);
 }
 
 void BIRSelectPopup::onColorToggle(CCObject* sender) {
-    auto toggler = static_cast<CCMenuItemToggler*>(sender);
-    toggler->m_toggled = !toggler->m_toggled;
-    auto colorToggles = CCArrayExt<CCMenuItemToggler*>(m_colorToggles);
-    m_allColorsToggler->toggle(colorToggles.size() == std::count_if(colorToggles.begin(), colorToggles.end(), [](auto toggle) { return toggle->m_toggled; }));
-    toggler->m_toggled = !toggler->m_toggled;
+    onToggle(m_colorToggles, static_cast<CCMenuItemToggler*>(sender), m_allColorsToggler);
 }
 
 void BIRSelectPopup::onAllColorsToggle(CCObject*) {
-    for (auto toggler : CCArrayExt<CCMenuItemToggler*>(m_colorToggles)) {
-        toggler->toggle(!m_allColorsToggler->m_toggled);
-    }
+    onAllToggle(m_colorToggles, m_allColorsToggler);
 }
 
-void BIRSelectPopup::randomize(UnlockType unlockType, bool randomizeGlow) {
-    auto num = BetterIconRandomizer::randomize(unlockType, randomizeGlow);
-    switch (unlockType) {
-        case UnlockType::Cube:
-            m_garageLayer->m_iconPages[IconType::Cube] = (num - 1) / 36;
-            break;
-        case UnlockType::Ship:
-            m_garageLayer->m_iconPages[IconType::Ship] = (num - 1) / 36;
-            break;
-        case UnlockType::Ball:
-            m_garageLayer->m_iconPages[IconType::Ball] = (num - 1) / 36;
-            break;
-        case UnlockType::Bird:
-            m_garageLayer->m_iconPages[IconType::Ufo] = (num - 1) / 36;
-            break;
-        case UnlockType::Dart:
-            m_garageLayer->m_iconPages[IconType::Wave] = (num - 1) / 36;
-            break;
-        case UnlockType::Robot:
-            m_garageLayer->m_iconPages[IconType::Robot] = (num - 1) / 36;
-            break;
-        case UnlockType::Spider:
-            m_garageLayer->m_iconPages[IconType::Spider] = (num - 1) / 36;
-            break;
-        case UnlockType::Streak:
-        case UnlockType::ShipFire:
-            m_garageLayer->m_iconPages[IconType::Special] = 0;
-            break;
-        case UnlockType::Death:
-            m_garageLayer->m_iconPages[IconType::DeathEffect] = 0;
-            break;
-        case UnlockType::Swing:
-            m_garageLayer->m_iconPages[IconType::Swing] = (num - 1) / 36;
-            break;
-        case UnlockType::Jetpack:
-            m_garageLayer->m_iconPages[IconType::Jetpack] = 0;
-            break;
+void BIRSelectPopup::onToggle(CCArray* toggles, CCMenuItemToggler* toggler, CCMenuItemToggler* allToggler) {
+    toggler->m_toggled = !toggler->m_toggled;
+    auto allToggles = CCArrayExt<CCMenuItemToggler*>(toggles);
+    allToggler->toggle(allToggles.size() == std::count_if(allToggles.begin(), allToggles.end(), [](auto toggle) { return toggle->m_toggled; }));
+    toggler->m_toggled = !toggler->m_toggled;
+}
+
+void BIRSelectPopup::onAllToggle(CCArray* toggles, CCMenuItemToggler* allToggler) {
+    for (auto toggler : CCArrayExt<CCMenuItemToggler*>(toggles)) {
+        toggler->toggle(!allToggler->m_toggled);
     }
 }
 
@@ -200,52 +155,52 @@ void BIRSelectPopup::onRandomize(CCObject*) {
     auto iconToggles = CCArrayExt<CCMenuItemToggler*>(m_iconToggles);
     if (iconToggles[0]->m_toggled) {
         enabledTypes.push_back(IconType::Cube);
-        randomize(UnlockType::Cube, false);
+        m_garageLayer->m_iconPages[IconType::Cube] = (BetterIconRandomizer::randomize(UnlockType::Cube) - 1) / 36;
     }
     if (iconToggles[1]->m_toggled) {
         enabledTypes.push_back(IconType::Ship);
-        randomize(UnlockType::Ship, false);
+        m_garageLayer->m_iconPages[IconType::Ship] = (BetterIconRandomizer::randomize(UnlockType::Ship) - 1) / 36;
     }
     if (iconToggles[2]->m_toggled) {
         enabledTypes.push_back(IconType::Ball);
-        randomize(UnlockType::Ball, false);
+        m_garageLayer->m_iconPages[IconType::Ball] = (BetterIconRandomizer::randomize(UnlockType::Ball) - 1) / 36;
     }
     if (iconToggles[3]->m_toggled) {
         enabledTypes.push_back(IconType::Ufo);
-        randomize(UnlockType::Bird, false);
+        m_garageLayer->m_iconPages[IconType::Ufo] = (BetterIconRandomizer::randomize(UnlockType::Bird) - 1) / 36;
     }
     if (iconToggles[4]->m_toggled) {
         enabledTypes.push_back(IconType::Wave);
-        randomize(UnlockType::Dart, false);
+        m_garageLayer->m_iconPages[IconType::Wave] = (BetterIconRandomizer::randomize(UnlockType::Dart) - 1) / 36;
     }
     if (iconToggles[5]->m_toggled) {
         enabledTypes.push_back(IconType::Robot);
-        randomize(UnlockType::Robot, false);
+        m_garageLayer->m_iconPages[IconType::Robot] = (BetterIconRandomizer::randomize(UnlockType::Robot) - 1) / 36;
     }
     if (iconToggles[6]->m_toggled) {
         enabledTypes.push_back(IconType::Spider);
-        randomize(UnlockType::Spider, false);
+        m_garageLayer->m_iconPages[IconType::Spider] = (BetterIconRandomizer::randomize(UnlockType::Spider) - 1) / 36;
     }
     if (iconToggles[7]->m_toggled) {
         enabledTypes.push_back(IconType::Swing);
-        randomize(UnlockType::Swing, false);
+        m_garageLayer->m_iconPages[IconType::Swing] = (BetterIconRandomizer::randomize(UnlockType::Swing) - 1) / 36;
     }
     if (iconToggles[8]->m_toggled) {
         enabledTypes.push_back(IconType::Jetpack);
-        randomize(UnlockType::Jetpack, false);
+        m_garageLayer->m_iconPages[IconType::Jetpack] = (BetterIconRandomizer::randomize(UnlockType::Jetpack) - 1) / 36;
     }
 
     auto specialToggles = CCArrayExt<CCMenuItemToggler*>(m_specialToggles);
     if (specialToggles[0]->m_toggled) {
-        randomize(UnlockType::Streak, false);
-        randomize(UnlockType::ShipFire, false);
+        BetterIconRandomizer::randomize(UnlockType::Streak);
+        BetterIconRandomizer::randomize(UnlockType::ShipFire);
     }
-    if (specialToggles[1]->m_toggled) randomize(UnlockType::Death, false);
+    if (specialToggles[1]->m_toggled) m_garageLayer->m_iconPages[IconType::DeathEffect] = (BetterIconRandomizer::randomize(UnlockType::Death) - 1) / 36;
 
     auto colorToggles = CCArrayExt<CCMenuItemToggler*>(m_colorToggles);
-    if (colorToggles[0]->m_toggled) randomize(UnlockType::Col1, false);
-    if (colorToggles[1]->m_toggled) randomize(UnlockType::Col2, false);
-    if (colorToggles[2]->m_toggled) randomize(UnlockType::Col2, true);
+    if (colorToggles[0]->m_toggled) BetterIconRandomizer::randomize(UnlockType::Col1);
+    if (colorToggles[1]->m_toggled) BetterIconRandomizer::randomize(UnlockType::Col2);
+    if (colorToggles[2]->m_toggled) BetterIconRandomizer::randomize(UnlockType::Col2, true);
 
     auto gameManager = GameManager::sharedState();
     auto randomType = enabledTypes.empty() ? gameManager->m_playerIconType : enabledTypes[BetterIconRandomizer::randomNumber(0, enabledTypes.size() - 1)];

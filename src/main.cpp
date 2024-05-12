@@ -1,17 +1,6 @@
 #include <Geode/modify/GJGarageLayer.hpp>
 #include "BIRSelectPopup.hpp"
 
-CircleBaseColor toCircleBaseColor(ButtonColor color) {
-    switch (color) {
-        case ButtonColor::Green: return CircleBaseColor::Green;
-        case ButtonColor::Pink: return CircleBaseColor::Pink;
-        case ButtonColor::Blue: return CircleBaseColor::Blue;
-        case ButtonColor::Cyan: return CircleBaseColor::Cyan;
-        case ButtonColor::Gray: return CircleBaseColor::Gray;
-        default: return CircleBaseColor::Geode;
-    }
-}
-
 $on_mod(Loaded) {
     Mod::get()->addCustomSetting<ButtonColorSettingValue>("randomize-button-color", ButtonColor::Random);
 }
@@ -28,17 +17,18 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
         auto shardsMenu = getChildByID("shards-menu");
         auto nodeIds = shardsMenu != nullptr;
         if (!shardsMenu) shardsMenu = getChildOfType<CCMenu>(this, 2);
-        auto buttonSprite = CircleButtonSprite::createWithSprite("BIR_randomBtn_001.png"_spr, 1.0f,
-            toCircleBaseColor(ButtonColorSettingValue::randomColor), CircleBaseSize::Small);
-        buttonSprite->getTopNode()->setScale(1.0f);
-        auto randomizeBtn = CCMenuItemSpriteExtra::create(buttonSprite, this, menu_selector(BIRGarageLayer::onSelectRandomize));
+        auto randomizeBtn = CCMenuItemSpriteExtra::create(
+            CCSprite::createWithSpriteFrameName(Mod::get()->expandSpriteName(fmt::format("BIR_randomBtn_{0:02d}_001.png",
+                static_cast<int>(ButtonColorSettingValue::randomColor)).c_str())),
+            this,
+            menu_selector(BIRGarageLayer::onSelectRandomize)
+        );
         if (!nodeIds) randomizeBtn->setPosition(shardsMenu->convertToNodeSpace({ 30.0f, CCDirector::sharedDirector()->getWinSize().height - 162.0f }));
         randomizeBtn->setID("select-randomize-button"_spr);
         shardsMenu->addChild(randomizeBtn);
         if (nodeIds) shardsMenu->updateLayout();
 
         BetterIconRandomizer::setupUnlocked();
-
         return true;
     }
 

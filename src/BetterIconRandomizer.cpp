@@ -28,45 +28,11 @@ void BetterIconRandomizer::setupUnlocked() {
     setupUnlockedIcons(IconType::ShipFire);
 }
 
-UnlockType BetterIconRandomizer::iconTypeToUnlockType(IconType iconType) {
-    switch (iconType) {
-        case IconType::Cube: return UnlockType::Cube;
-        case IconType::Ship: return UnlockType::Ship;
-        case IconType::Ball: return UnlockType::Ball;
-        case IconType::Ufo: return UnlockType::Bird;
-        case IconType::Wave: return UnlockType::Dart;
-        case IconType::Robot: return UnlockType::Robot;
-        case IconType::Spider: return UnlockType::Spider;
-        case IconType::Special: return UnlockType::Streak;
-        case IconType::DeathEffect: return UnlockType::Death;
-        case IconType::Swing: return UnlockType::Swing;
-        case IconType::Jetpack: return UnlockType::Jetpack;
-        case IconType::ShipFire: return UnlockType::ShipFire;
-    }
-}
-
-int BetterIconRandomizer::countForType(IconType iconType) {
-    switch (iconType) {
-        case IconType::Cube: return 484;
-        case IconType::Ship: return 169;
-        case IconType::Ball: return 118;
-        case IconType::Ufo: return 149;
-        case IconType::Wave: return 96;
-        case IconType::Robot: return 68;
-        case IconType::Spider: return 69;
-        case IconType::Special: return 7;
-        case IconType::DeathEffect: return 20;
-        case IconType::Swing: return 43;
-        case IconType::Jetpack: return 5;
-        case IconType::ShipFire: return 6;
-    }
-}
-
 void BetterIconRandomizer::setupUnlockedIcons(IconType iconType) {
     auto gameManager = GameManager::sharedState();
-    auto& vec = unlocked[iconTypeToUnlockType(iconType)];
+    auto& vec = unlocked[gameManager->iconTypeToUnlockType(iconType)];
     vec.clear();
-    auto amount = countForType(iconType);
+    auto amount = gameManager->countForType(iconType);
     for (int i = 1; i <= amount; i++) {
         if (gameManager->isIconUnlocked(i, iconType)) vec.push_back(i);
     }
@@ -76,7 +42,7 @@ void BetterIconRandomizer::setupUnlockedColors(UnlockType unlockType) {
     auto gameManager = GameManager::sharedState();
     auto& vec = unlocked[unlockType];
     vec.clear();
-    for (int i = 0; i <= 106; i++) {
+    for (int i = 0; i < 107; i++) {
         if (gameManager->isColorUnlocked(i, unlockType)) vec.push_back(i);
     }
 }

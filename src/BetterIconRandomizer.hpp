@@ -21,12 +21,10 @@ private:
         { UnlockType::ShipFire, {} }
     };
 
-    static UnlockType iconTypeToUnlockType(IconType);
-    static int countForType(IconType);
     static void setupUnlockedIcons(IconType);
     static void setupUnlockedColors(UnlockType);
 public:
     static int randomNumber(int, int);
     static void setupUnlocked();
-    static int randomize(UnlockType, bool);
+    static int randomize(UnlockType, bool randomizeGlow = false);
 };

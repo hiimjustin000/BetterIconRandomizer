@@ -24,57 +24,6 @@ void ButtonColorSettingValue::setValue(ButtonColor value) {
     m_value = value;
 }
 
-const char* buttonColorToString(ButtonColor color) {
-    switch (color) {
-        case ButtonColor::Random: return "Random";
-        case ButtonColor::Green: return "Green";
-        case ButtonColor::Pink: return "Pink";
-        case ButtonColor::Blue: return "Blue";
-        case ButtonColor::Cyan: return "Cyan";
-        case ButtonColor::Gray: return "Gray";
-        default: return "Unknown";
-    }
-}
-
-void colorLabel(CCLabelBMFont* label, ButtonColor color) {
-    if (color != ButtonColor::Random) {
-        for (auto fontSprite : CCArrayExt<CCSprite*>(label->getChildren())) {
-            fontSprite->setColor({ 255, 255, 255 });
-        }
-    }
-    switch (color) {
-        case ButtonColor::Random: {
-            label->setColor({ 255, 255, 255 });
-            auto fontSprites = CCArrayExt<CCSprite*>(label->getChildren());
-            fontSprites[0]->setColor({ 255, 0, 0 });
-            fontSprites[1]->setColor({ 255, 165, 0 });
-            fontSprites[2]->setColor({ 255, 255, 0 });
-            fontSprites[3]->setColor({ 0, 255, 0 });
-            fontSprites[4]->setColor({ 0, 0, 255 });
-            fontSprites[5]->setColor({ 128, 0, 128 });
-            break;
-        }
-        case ButtonColor::Green:
-            label->setColor({ 0, 255, 0 });
-            break;
-        case ButtonColor::Pink:
-            label->setColor({ 255, 0, 255 });
-            break;
-        case ButtonColor::Blue:
-            label->setColor({ 0, 0, 255 });
-            break;
-        case ButtonColor::Cyan:
-            label->setColor({ 0, 255, 255 });
-            break;
-        case ButtonColor::Gray:
-            label->setColor({ 128, 128, 128 });
-            break;
-        default:
-            label->setColor({ 255, 255, 255 });
-            break;
-    }
-}
-
 ButtonColorSettingNode* ButtonColorSettingNode::create(ButtonColorSettingValue* value, float width) {
     auto ret = new ButtonColorSettingNode();
     if (ret && ret->init(value, width)) {
@@ -87,10 +36,8 @@ ButtonColorSettingNode* ButtonColorSettingNode::create(ButtonColorSettingValue* 
 
 bool ButtonColorSettingNode::init(ButtonColorSettingValue* value, float width) {
     if (!SettingNode::init(value)) return false;
-    m_value = value;
 
     setContentSize({ width, 40.0f });
-
     m_uncommittedValue = static_cast<int>(value->getValue());
 
     m_nameLabel = CCLabelBMFont::create("Randomize Button Color", "bigFont.fnt");
@@ -114,8 +61,6 @@ bool ButtonColorSettingNode::init(ButtonColorSettingValue* value, float width) {
     m_resetBtn = CCMenuItemSpriteExtra::create(resetBtnSpr, this, menu_selector(ButtonColorSettingNode::onReset));
     m_resetBtn->setPositionX(m_nameLabel->getScaledContentSize().width - width + 75.0f);
     menu->addChild(m_resetBtn);
-
-    menu->setTouchEnabled(true);
 
     auto bgSprite = CCScale9Sprite::create("square02b_001.png", { 0.0f, 0.0f, 80.0f, 80.0f });
     bgSprite->setScale(0.325f);
@@ -143,6 +88,7 @@ bool ButtonColorSettingNode::init(ButtonColorSettingValue* value, float width) {
     incArrow->setPositionX(-10.f);
     menu->addChild(incArrow);
 
+    menu->setTouchEnabled(true);
     valueChanged();
     return true;
 }
@@ -174,15 +120,55 @@ void ButtonColorSettingNode::valueChanged() {
     m_resetBtn->setVisible(hasNonDefaultValue());
     dispatchChanged();
     auto buttonColor = static_cast<ButtonColor>(m_uncommittedValue);
-    m_label->setString(buttonColorToString(buttonColor));
-    colorLabel(m_label, buttonColor);
+    if (buttonColor != ButtonColor::Random) {
+        for (auto fontSprite : CCArrayExt<CCSprite*>(m_label->getChildren())) {
+            fontSprite->setColor({ 255, 255, 255 });
+        }
+    }
+    switch (buttonColor) {
+        case ButtonColor::Random: {
+            m_label->setString("Random");
+            m_label->setColor({ 255, 255, 255 });
+            auto fontSprites = CCArrayExt<CCSprite*>(m_label->getChildren());
+            fontSprites[0]->setColor({ 255, 0, 0 });
+            fontSprites[1]->setColor({ 255, 165, 0 });
+            fontSprites[2]->setColor({ 255, 255, 0 });
+            fontSprites[3]->setColor({ 0, 255, 0 });
+            fontSprites[4]->setColor({ 0, 0, 255 });
+            fontSprites[5]->setColor({ 128, 0, 128 });
+            break;
+        }
+        case ButtonColor::Green:
+            m_label->setString("Green");
+            m_label->setColor({ 0, 255, 0 });
+            break;
+        case ButtonColor::Pink:
+            m_label->setString("Pink");
+            m_label->setColor({ 255, 0, 255 });
+            break;
+        case ButtonColor::Blue:
+            m_label->setString("Blue");
+            m_label->setColor({ 0, 0, 255 });
+            break;
+        case ButtonColor::Cyan:
+            m_label->setString("Cyan");
+            m_label->setColor({ 0, 255, 255 });
+            break;
+        case ButtonColor::Gray:
+            m_label->setString("Gray");
+            m_label->setColor({ 128, 128, 128 });
+            break;
+        default:
+            m_label->setString("Unknown");
+            m_label->setColor({ 255, 255, 255 });
+            break;
+    }
 }
 
 void ButtonColorSettingNode::commit() {
     auto settingValue = static_cast<ButtonColorSettingValue*>(m_value);
     settingValue->setValue(static_cast<ButtonColor>(m_uncommittedValue));
     ButtonColorSettingValue::randomColor = settingValue->getValue();
-    m_uncommittedValue = static_cast<int>(ButtonColorSettingValue::randomColor);
     valueChanged();
     dispatchCommitted();
 }

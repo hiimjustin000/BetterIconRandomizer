@@ -11,8 +11,8 @@ enum class ButtonColor {
 };
 
 class ButtonColorSettingValue : public SettingValue {
+protected:
     ButtonColor m_value = ButtonColor::Random;
-
 public:
     inline static ButtonColor randomColor = ButtonColor::Random;
 
@@ -25,6 +25,7 @@ public:
 };
 
 class ButtonColorSettingNode : public SettingNode {
+protected:
     int m_uncommittedValue;
     CCLabelBMFont* m_nameLabel;
     CCMenuItemSpriteExtra* m_resetBtn;
@@ -32,9 +33,7 @@ class ButtonColorSettingNode : public SettingNode {
     CCMenuItemSpriteExtra* m_decArrow;
     CCMenuItemSpriteExtra* m_incArrow;
 
-protected:
     bool init(ButtonColorSettingValue* value, float width);
-
 public:
     static ButtonColorSettingNode* create(ButtonColorSettingValue* value, float width);
     void onDescription(CCObject*);
