@@ -56,14 +56,14 @@ bool BIRSelectPopup::setup() {
     m_colorMenu->updateLayout();
 
     m_allMenu = CCMenu::create();
-    m_allMenu->setLayout(ColumnLayout::create()->setGap(6.0f));
+    m_allMenu->setLayout(ColumnLayout::create()->setGap(6.0f)->setAxisReverse(true));
     m_allMenu->setContentSize({ 30.0f, 80.0f });
     m_allMenu->setPosition(332.5f, 45.0f);
     m_mainLayer->addChild(m_allMenu);
 
-    m_allColorsToggler = createAllToggle(menu_selector(BIRSelectPopup::onAllColorsToggle));
-    m_allSpecialsToggler = createAllToggle(menu_selector(BIRSelectPopup::onAllSpecialsToggle));
     m_allIconsToggler = createAllToggle(menu_selector(BIRSelectPopup::onAllIconsToggle));
+    m_allSpecialsToggler = createAllToggle(menu_selector(BIRSelectPopup::onAllSpecialsToggle));
+    m_allColorsToggler = createAllToggle(menu_selector(BIRSelectPopup::onAllColorsToggle));
 
     m_allMenu->updateLayout();
 
