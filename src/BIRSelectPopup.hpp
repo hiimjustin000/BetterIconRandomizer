@@ -10,13 +10,17 @@ protected:
     CCMenuItemToggler* m_allIconsToggler;
     CCMenuItemToggler* m_allSpecialsToggler;
     CCMenuItemToggler* m_allColorsToggler;
+    CCMenu* m_iconMenu;
+    CCMenu* m_colorMenu;
+    CCMenu* m_allMenu;
 
     bool setup() override;
-    CCMenuItemToggler* createIconToggle(const char*, float);
-    CCMenuItemToggler* createColorToggle(const char*, float, int);
-    CCMenuItemToggler* createAllToggle(const char*, float, SEL_MenuHandler);
-    inline void onToggle(CCArray*, CCMenuItemToggler*, CCMenuItemToggler*);
-    inline void onAllToggle(CCArray*, CCMenuItemToggler*);
+    CCMenuItemToggler* createIconToggle(const char*);
+    CCMenuItemToggler* createColorToggle(const char*, int);
+    CCMenuItemToggler* createAllToggle(SEL_MenuHandler);
+    CCLabelBMFont* createAllLabel(const char*, CCMenuItemToggler*);
+    void onToggle(CCArray*, CCMenuItemToggler*, CCMenuItemToggler*);
+    void onAllToggle(CCArray*, CCMenuItemToggler*);
 public:
     static BIRSelectPopup* create();
 

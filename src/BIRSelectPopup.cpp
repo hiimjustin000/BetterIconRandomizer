@@ -15,33 +15,61 @@ BIRSelectPopup* BIRSelectPopup::create() {
 bool BIRSelectPopup::setup() {
     setTitle("Select Modes to Randomize");
 
+    m_iconMenu = CCMenu::create();
+    m_iconMenu->setLayout(RowLayout::create()->setGap(6.0f));
+    m_iconMenu->setContentSize({ 340.0f, 30.0f });
+    m_iconMenu->setPosition(175.0f, 100.0f);
+    m_mainLayer->addChild(m_iconMenu);
+
     m_iconToggles = CCArray::create();
     m_iconToggles->retain();
-    m_iconToggles->addObject(createIconToggle("icon", 25.0f));
-    m_iconToggles->addObject(createIconToggle("ship", 55.0f));
-    m_iconToggles->addObject(createIconToggle("ball", 85.0f));
-    m_iconToggles->addObject(createIconToggle("bird", 115.0f));
-    m_iconToggles->addObject(createIconToggle("dart", 145.0f));
-    m_iconToggles->addObject(createIconToggle("robot", 175.0f));
-    m_iconToggles->addObject(createIconToggle("spider", 205.0f));
-    m_iconToggles->addObject(createIconToggle("swing", 235.0f));
-    m_iconToggles->addObject(createIconToggle("jetpack", 265.0f));
+    m_iconToggles->addObject(createIconToggle("icon"));
+    m_iconToggles->addObject(createIconToggle("ship"));
+    m_iconToggles->addObject(createIconToggle("ball"));
+    m_iconToggles->addObject(createIconToggle("bird"));
+    m_iconToggles->addObject(createIconToggle("dart"));
+    m_iconToggles->addObject(createIconToggle("robot"));
+    m_iconToggles->addObject(createIconToggle("spider"));
+    m_iconToggles->addObject(createIconToggle("swing"));
+    m_iconToggles->addObject(createIconToggle("jetpack"));
 
     m_specialToggles = CCArray::create();
     m_specialToggles->retain();
-    m_specialToggles->addObject(createIconToggle("streak", 295.0f));
-    m_specialToggles->addObject(createIconToggle("explosion", 325.0f));
+    m_specialToggles->addObject(createIconToggle("streak"));
+    m_specialToggles->addObject(createIconToggle("explosion"));
+
+    m_iconMenu->updateLayout();
+
+    m_colorMenu = CCMenu::create();
+    m_colorMenu->setLayout(RowLayout::create()->setGap(20.0f));
+    m_colorMenu->setContentSize({ 150.0f, 40.0f });
+    m_colorMenu->setPosition(175.0f, 65.0f);
+    m_mainLayer->addChild(m_colorMenu);
 
     auto gameManager = GameManager::sharedState();
     m_colorToggles = CCArray::create();
     m_colorToggles->retain();
-    m_colorToggles->addObject(createColorToggle("1", 125.0f, gameManager->getPlayerColor()));
-    m_colorToggles->addObject(createColorToggle("2", 175.0f, gameManager->getPlayerColor2()));
-    m_colorToggles->addObject(createColorToggle("G", 225.0f, gameManager->getPlayerGlowColor()));
+    m_colorToggles->addObject(createColorToggle("1", gameManager->getPlayerColor()));
+    m_colorToggles->addObject(createColorToggle("2", gameManager->getPlayerColor2()));
+    m_colorToggles->addObject(createColorToggle("G", gameManager->getPlayerGlowColor()));
 
-    m_allIconsToggler = createAllToggle("Icons", 70.0f, menu_selector(BIRSelectPopup::onAllIconsToggle));
-    m_allSpecialsToggler = createAllToggle("Special", 45.0f, menu_selector(BIRSelectPopup::onAllSpecialsToggle));
-    m_allColorsToggler = createAllToggle("Colors", 20.0f, menu_selector(BIRSelectPopup::onAllColorsToggle));
+    m_colorMenu->updateLayout();
+
+    m_allMenu = CCMenu::create();
+    m_allMenu->setLayout(ColumnLayout::create()->setGap(6.0f));
+    m_allMenu->setContentSize({ 30.0f, 80.0f });
+    m_allMenu->setPosition(332.5f, 45.0f);
+    m_mainLayer->addChild(m_allMenu);
+
+    m_allColorsToggler = createAllToggle(menu_selector(BIRSelectPopup::onAllColorsToggle));
+    m_allSpecialsToggler = createAllToggle(menu_selector(BIRSelectPopup::onAllSpecialsToggle));
+    m_allIconsToggler = createAllToggle(menu_selector(BIRSelectPopup::onAllIconsToggle));
+
+    m_allMenu->updateLayout();
+
+    m_mainLayer->addChild(createAllLabel("Icons", m_allIconsToggler));
+    m_mainLayer->addChild(createAllLabel("Special", m_allSpecialsToggler));
+    m_mainLayer->addChild(createAllLabel("Colors", m_allColorsToggler));
 
     auto randomizeButton = CCMenuItemSpriteExtra::create(
         ButtonSprite::create("Randomize", "goldFont.fnt", "GJ_button_01.png", 0.8f),
@@ -54,7 +82,7 @@ bool BIRSelectPopup::setup() {
     return true;
 }
 
-CCMenuItemToggler* BIRSelectPopup::createIconToggle(const char* frame, float x) {
+CCMenuItemToggler* BIRSelectPopup::createIconToggle(const char* frame) {
     auto toggler = CCMenuItemToggler::createWithSize(
         fmt::format("gj_{}Btn_off_001.png", frame).c_str(),
         fmt::format("gj_{}Btn_on_001.png", frame).c_str(),
@@ -62,13 +90,12 @@ CCMenuItemToggler* BIRSelectPopup::createIconToggle(const char* frame, float x) 
         menu_selector(BIRSelectPopup::onIconToggle),
         0.75f
     );
-    toggler->setPosition(x, 100.0f);
-    m_buttonMenu->addChild(toggler);
+    m_iconMenu->addChild(toggler);
 
     return toggler;
 }
 
-CCMenuItemToggler* BIRSelectPopup::createColorToggle(const char* label, float x, int colorIdx) {
+CCMenuItemToggler* BIRSelectPopup::createColorToggle(const char* label, int colorIdx) {
     auto gameManager = GameManager::sharedState();
     auto color = gameManager->colorForIdx(colorIdx);
     auto darkColor = ccColor3B {
@@ -92,24 +119,25 @@ CCMenuItemToggler* BIRSelectPopup::createColorToggle(const char* label, float x,
     auto toggler = CCMenuItemToggler::create(colorSpriteOff, colorSpriteOn, this, menu_selector(BIRSelectPopup::onColorToggle));
     colorLabelOff->setPosition(colorSpriteOff->getPosition());
     colorLabelOn->setPosition(colorSpriteOn->getPosition());
-    toggler->setPosition(x, 65.0f);
-    m_buttonMenu->addChild(toggler);
+    m_colorMenu->addChild(toggler);
 
     return toggler;
 }
 
-CCMenuItemToggler* BIRSelectPopup::createAllToggle(const char* label, float y, SEL_MenuHandler handler) {
+CCMenuItemToggler* BIRSelectPopup::createAllToggle(SEL_MenuHandler handler) {
+    auto toggler = CCMenuItemToggler::createWithStandardSprites(this, handler, 0.6f);
+    m_allMenu->addChild(toggler);
+
+    return toggler;
+}
+
+CCLabelBMFont* BIRSelectPopup::createAllLabel(const char* label, CCMenuItemToggler* toggler) {
     auto allLabel = CCLabelBMFont::create(label, "bigFont.fnt");
     allLabel->setScale(0.5f);
     allLabel->setAnchorPoint({ 1.0f, 0.5f });
-    allLabel->setPosition(320.0f, y);
-    m_mainLayer->addChild(allLabel);
+    allLabel->setPosition(m_mainLayer->convertToNodeSpace(m_allMenu->convertToWorldSpace(toggler->getPosition())) + CCPoint { -12.5f, 0.0f });
 
-    auto toggler = CCMenuItemToggler::createWithStandardSprites(this, handler, 0.6f);
-    toggler->setPosition(332.5f, y);
-    m_buttonMenu->addChild(toggler);
-
-    return toggler;
+    return allLabel;
 }
 
 void BIRSelectPopup::onIconToggle(CCObject* sender) {
