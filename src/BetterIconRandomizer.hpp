@@ -16,6 +16,7 @@ private:
         { UnlockType::Spider, {} },
         { UnlockType::Streak, {} },
         { UnlockType::Death, {} },
+        { UnlockType::GJItem, {} },
         { UnlockType::Swing, {} },
         { UnlockType::Jetpack, {} },
         { UnlockType::ShipFire, {} }

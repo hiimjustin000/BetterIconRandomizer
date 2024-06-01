@@ -1,9 +1,9 @@
 #include "BIRSelectPopup.hpp"
 
-BIRSelectPopup* BIRSelectPopup::create() {
+BIRSelectPopup* BIRSelectPopup::create(GJGarageLayer* garageLayer) {
     auto ret = new BIRSelectPopup();
 
-    if (ret && ret->initAnchored(350.0f, 150.0f)) {
+    if (ret && ret->initAnchored(350.0f, 150.0f, garageLayer)) {
         ret->autorelease();
         return ret;
     }
@@ -12,8 +12,10 @@ BIRSelectPopup* BIRSelectPopup::create() {
     return nullptr;
 }
 
-bool BIRSelectPopup::setup() {
+bool BIRSelectPopup::setup(GJGarageLayer* garageLayer) {
     setTitle("Select Modes to Randomize");
+
+    m_garageLayer = garageLayer;
 
     m_iconMenu = CCMenu::create();
     m_iconMenu->setLayout(RowLayout::create()->setGap(6.0f));
@@ -49,9 +51,9 @@ bool BIRSelectPopup::setup() {
     auto gameManager = GameManager::sharedState();
     m_colorToggles = CCArray::create();
     m_colorToggles->retain();
-    m_colorToggles->addObject(createColorToggle("1", gameManager->getPlayerColor()));
-    m_colorToggles->addObject(createColorToggle("2", gameManager->getPlayerColor2()));
-    m_colorToggles->addObject(createColorToggle("G", gameManager->getPlayerGlowColor()));
+    m_colorToggles->addObject(createColorToggle("1", gameManager->colorForIdx(gameManager->getPlayerColor())));
+    m_colorToggles->addObject(createColorToggle("2", gameManager->colorForIdx(gameManager->getPlayerColor2())));
+    m_colorToggles->addObject(createColorToggle("G", gameManager->colorForIdx(gameManager->getPlayerGlowColor())));
 
     m_colorMenu->updateLayout();
 
@@ -95,9 +97,7 @@ CCMenuItemToggler* BIRSelectPopup::createIconToggle(const char* frame) {
     return toggler;
 }
 
-CCMenuItemToggler* BIRSelectPopup::createColorToggle(const char* label, int colorIdx) {
-    auto gameManager = GameManager::sharedState();
-    auto color = gameManager->colorForIdx(colorIdx);
+CCMenuItemToggler* BIRSelectPopup::createColorToggle(const char* label, ccColor3B color) {
     auto darkColor = ccColor3B {
         (unsigned char)floorf(color.r * 0.6f),
         (unsigned char)floorf(color.g * 0.6f),
@@ -222,6 +222,7 @@ void BIRSelectPopup::onRandomize(CCObject*) {
     if (specialToggles[0]->m_toggled) {
         BetterIconRandomizer::randomize(UnlockType::Streak);
         BetterIconRandomizer::randomize(UnlockType::ShipFire);
+        BetterIconRandomizer::randomize(UnlockType::GJItem);
     }
     if (specialToggles[1]->m_toggled) m_garageLayer->m_iconPages[IconType::DeathEffect] = (BetterIconRandomizer::randomize(UnlockType::Death) - 1) / 36;
 

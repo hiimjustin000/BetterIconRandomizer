@@ -23,6 +23,7 @@ void BetterIconRandomizer::setupUnlocked() {
     setupUnlockedIcons(IconType::Spider);
     setupUnlockedIcons(IconType::Special);
     setupUnlockedIcons(IconType::DeathEffect);
+    setupUnlockedIcons((IconType)100);
     setupUnlockedIcons(IconType::Swing);
     setupUnlockedIcons(IconType::Jetpack);
     setupUnlockedIcons(IconType::ShipFire);
@@ -32,8 +33,8 @@ void BetterIconRandomizer::setupUnlockedIcons(IconType iconType) {
     auto gameManager = GameManager::sharedState();
     auto& vec = unlocked[gameManager->iconTypeToUnlockType(iconType)];
     vec.clear();
-    auto amount = gameManager->countForType(iconType);
-    for (int i = 1; i <= amount; i++) {
+    auto amount = iconType == (IconType)100 ? 20 : gameManager->countForType(iconType);
+    for (int i = iconType == (IconType)100 ? 18 : 1; i <= amount; i++) {
         if (gameManager->isIconUnlocked(i, iconType)) vec.push_back(i);
     }
 }
@@ -48,8 +49,15 @@ void BetterIconRandomizer::setupUnlockedColors(UnlockType unlockType) {
 }
 
 int BetterIconRandomizer::randomize(UnlockType unlockType, bool randomizeGlow) {
-    auto gameManager = GameManager::sharedState();
     auto& vec = unlocked[unlockType];
+    if (unlockType == UnlockType::GJItem) {
+        auto gameStatsManager = GameStatsManager::sharedState();
+        for (int i = 0; i < vec.size(); i++) {
+            gameStatsManager->toggleEnableItem(unlockType, vec[i], randomNumber(0, 1));
+        }
+        return 0;
+    }
+    auto gameManager = GameManager::sharedState();
     auto num = vec[randomNumber(0, vec.size() - 1)];
     switch (unlockType) {
         case UnlockType::Cube:
@@ -99,6 +107,6 @@ int BetterIconRandomizer::randomize(UnlockType unlockType, bool randomizeGlow) {
             gameManager->setPlayerShipStreak(num);
             return num;
         default:
-            return -1;
+            return 0;
     }
 }

@@ -1,10 +1,10 @@
-#include <Geode/modify/GJGarageLayer.hpp>
 #include "BIRSelectPopup.hpp"
 
 $on_mod(Loaded) {
     Mod::get()->addCustomSetting<ButtonColorSettingValue>("randomize-button-color", ButtonColor::Random);
 }
 
+#include <Geode/modify/GJGarageLayer.hpp>
 class $modify(BIRGarageLayer, GJGarageLayer) {
     bool init() override {
         if (!GJGarageLayer::init()) return false;
@@ -15,7 +15,7 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
         }
 
         auto randomizeBtn = CCMenuItemSpriteExtra::create(
-            CCSprite::createWithSpriteFrameName(Mod::get()->expandSpriteName(fmt::format("BIR_randomBtn_{0:02d}_001.png",
+            CCSprite::createWithSpriteFrameName(Mod::get()->expandSpriteName(fmt::format("BIR_randomBtn_{:02d}_001.png",
                 static_cast<int>(ButtonColorSettingValue::randomColor)).c_str())),
             this,
             menu_selector(BIRGarageLayer::onSelectRandomize)
@@ -30,8 +30,6 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
     }
 
     void onSelectRandomize(CCObject*) {
-        auto popup = BIRSelectPopup::create();
-        popup->m_garageLayer = this;
-        popup->show();
+        BIRSelectPopup::create(this)->show();
     }
 };

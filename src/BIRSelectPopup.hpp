@@ -1,9 +1,8 @@
 #include "ButtonColor.hpp"
 
-class BIRSelectPopup : public Popup<> {
-public:
-    GJGarageLayer* m_garageLayer;
+class BIRSelectPopup : public Popup<GJGarageLayer*> {
 protected:
+    GJGarageLayer* m_garageLayer;
     CCArray* m_iconToggles;
     CCArray* m_specialToggles;
     CCArray* m_colorToggles;
@@ -14,15 +13,15 @@ protected:
     CCMenu* m_colorMenu;
     CCMenu* m_allMenu;
 
-    bool setup() override;
+    bool setup(GJGarageLayer*) override;
     CCMenuItemToggler* createIconToggle(const char*);
-    CCMenuItemToggler* createColorToggle(const char*, int);
+    CCMenuItemToggler* createColorToggle(const char*, ccColor3B);
     CCMenuItemToggler* createAllToggle(SEL_MenuHandler);
     CCLabelBMFont* createAllLabel(const char*, CCMenuItemToggler*);
     void onToggle(CCArray*, CCMenuItemToggler*, CCMenuItemToggler*);
     void onAllToggle(CCArray*, CCMenuItemToggler*);
 public:
-    static BIRSelectPopup* create();
+    static BIRSelectPopup* create(GJGarageLayer*);
 
     void onIconToggle(CCObject*);
     void onAllIconsToggle(CCObject*);
