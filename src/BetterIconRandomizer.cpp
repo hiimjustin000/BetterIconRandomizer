@@ -23,7 +23,7 @@ void BetterIconRandomizer::setupUnlocked() {
     setupUnlockedIcons(IconType::Spider);
     setupUnlockedIcons(IconType::Special);
     setupUnlockedIcons(IconType::DeathEffect);
-    setupUnlockedIcons((IconType)100);
+    setupUnlockedIcons(IconType::Item);
     setupUnlockedIcons(IconType::Swing);
     setupUnlockedIcons(IconType::Jetpack);
     setupUnlockedIcons(IconType::ShipFire);
@@ -33,8 +33,8 @@ void BetterIconRandomizer::setupUnlockedIcons(IconType iconType) {
     auto gameManager = GameManager::sharedState();
     auto& vec = unlocked[gameManager->iconTypeToUnlockType(iconType)];
     vec.clear();
-    auto amount = iconType == (IconType)100 ? 20 : gameManager->countForType(iconType);
-    for (int i = iconType == (IconType)100 ? 18 : 1; i <= amount; i++) {
+    auto amount = iconType == IconType::Item ? 20 : gameManager->countForType(iconType);
+    for (int i = iconType == IconType::Item ? 18 : 1; i <= amount; i++) {
         if (gameManager->isIconUnlocked(i, iconType)) vec.push_back(i);
     }
 }
@@ -58,7 +58,7 @@ int BetterIconRandomizer::randomize(UnlockType unlockType, bool randomizeGlow) {
         return 0;
     }
     auto gameManager = GameManager::sharedState();
-    auto num = vec[randomNumber(0, vec.size() - 1)];
+    auto num = vec[(size_t)randomNumber(0, vec.size() - 1)];
     switch (unlockType) {
         case UnlockType::Cube:
             gameManager->setPlayerFrame(num);

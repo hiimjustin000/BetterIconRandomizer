@@ -52,13 +52,18 @@ bool ButtonColorSettingNode::init(ButtonColorSettingValue* value, float width) {
 
     auto infoSpr = CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
     infoSpr->setScale(0.6f);
-    auto infoBtn = CCMenuItemSpriteExtra::create(infoSpr, this, menu_selector(ButtonColorSettingNode::onDescription));
+    auto infoBtn = CCMenuItemExt::createSpriteExtra(infoSpr, [this](auto) {
+        FLAlertLayer::create("Randomize Button Color", "The color of the randomize button.", "OK")->show();
+    });
     infoBtn->setPositionX(m_nameLabel->getScaledContentSize().width - width + 55.0f);
     menu->addChild(infoBtn);
 
     auto resetBtnSpr = CCSprite::createWithSpriteFrameName("geode.loader/reset-gold.png");
     resetBtnSpr->setScale(0.5f);
-    m_resetBtn = CCMenuItemSpriteExtra::create(resetBtnSpr, this, menu_selector(ButtonColorSettingNode::onReset));
+    m_resetBtn = CCMenuItemExt::createSpriteExtra(resetBtnSpr, [this](auto) {
+        createQuickPopup("Reset", "Are you sure you want to <cr>reset</c> <cl>Randomize Button Color</c> to <cy>default</c>?", "Cancel", "Reset",
+            [this](auto, bool btn2) { if (btn2) resetToDefault(); });
+    });
     m_resetBtn->setPositionX(m_nameLabel->getScaledContentSize().width - width + 75.0f);
     menu->addChild(m_resetBtn);
 
@@ -78,40 +83,27 @@ bool ButtonColorSettingNode::init(ButtonColorSettingValue* value, float width) {
     auto decArrowSpr = CCSprite::createWithSpriteFrameName("navArrowBtn_001.png");
     decArrowSpr->setFlipX(true);
     decArrowSpr->setScale(0.3f);
-    auto decArrow = CCMenuItemSpriteExtra::create(decArrowSpr, this, menu_selector(ButtonColorSettingNode::onLeftArrow));
+    auto decArrow = CCMenuItemExt::createSpriteExtra(decArrowSpr, [this](auto) {
+        m_uncommittedValue -= 1;
+        if (m_uncommittedValue < 0) m_uncommittedValue = 5;
+        valueChanged();
+    });
     decArrow->setPositionX(80.0f - width / 2);
     menu->addChild(decArrow);
 
     auto incArrowSpr = CCSprite::createWithSpriteFrameName("navArrowBtn_001.png");
     incArrowSpr->setScale(0.3f);
-    auto incArrow = CCMenuItemSpriteExtra::create(incArrowSpr, this, menu_selector(ButtonColorSettingNode::onRightArrow));
+    auto incArrow = CCMenuItemExt::createSpriteExtra(incArrowSpr, [this](auto) {
+        m_uncommittedValue += 1;
+        if (m_uncommittedValue > 5) m_uncommittedValue = 0;
+        valueChanged();
+    });
     incArrow->setPositionX(-10.f);
     menu->addChild(incArrow);
 
     menu->setTouchEnabled(true);
     valueChanged();
     return true;
-}
-
-void ButtonColorSettingNode::onDescription(CCObject*) {
-    FLAlertLayer::create("Randomize Button Color", "The color of the randomize button.", "OK")->show();
-}
-
-void ButtonColorSettingNode::onReset(CCObject*) {
-    createQuickPopup("Reset", "Are you sure you want to <cr>reset</c> <cl>Randomize Button Color</c> to <cy>default</c>?", "Cancel", "Reset",
-        [this](auto, bool btn2) { if (btn2) resetToDefault(); });
-}
-
-void ButtonColorSettingNode::onLeftArrow(CCObject*) {
-    m_uncommittedValue -= 1;
-    if (m_uncommittedValue < 0) m_uncommittedValue = 5;
-    valueChanged();
-}
-
-void ButtonColorSettingNode::onRightArrow(CCObject*) {
-    m_uncommittedValue += 1;
-    if (m_uncommittedValue > 5) m_uncommittedValue = 0;
-    valueChanged();
 }
 
 void ButtonColorSettingNode::valueChanged() {
@@ -121,15 +113,16 @@ void ButtonColorSettingNode::valueChanged() {
     dispatchChanged();
     auto buttonColor = static_cast<ButtonColor>(m_uncommittedValue);
     if (buttonColor != ButtonColor::Random) {
-        for (auto fontSprite : CCArrayExt<CCSprite*>(m_label->getChildren())) {
-            fontSprite->setColor({ 255, 255, 255 });
+        auto fontSprites = reinterpret_cast<CCSprite**>(m_label->getChildren()->data->arr);
+        for (int i = 0; i < m_label->getChildrenCount(); i++) {
+            fontSprites[i]->setColor({ 255, 255, 255 });
         }
     }
     switch (buttonColor) {
         case ButtonColor::Random: {
             m_label->setString("Random");
             m_label->setColor({ 255, 255, 255 });
-            auto fontSprites = CCArrayExt<CCSprite*>(m_label->getChildren());
+            auto fontSprites = reinterpret_cast<CCSprite**>(m_label->getChildren()->data->arr);
             fontSprites[0]->setColor({ 255, 0, 0 });
             fontSprites[1]->setColor({ 255, 165, 0 });
             fontSprites[2]->setColor({ 255, 255, 0 });

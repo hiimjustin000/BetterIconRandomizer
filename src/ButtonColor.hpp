@@ -36,10 +36,6 @@ protected:
     bool init(ButtonColorSettingValue* value, float width);
 public:
     static ButtonColorSettingNode* create(ButtonColorSettingValue* value, float width);
-    void onDescription(CCObject*);
-    void onReset(CCObject*);
-    void onLeftArrow(CCObject*);
-    void onRightArrow(CCObject*);
     void valueChanged();
     void commit() override;
     bool hasUncommittedChanges() override;
