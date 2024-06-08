@@ -29,5 +29,9 @@
         "randomize-button-color": {
             "type": "custom"
         }
-    }
+    },
+    "tags": [
+        "customization",
+        "offline"
+    ]
 }
