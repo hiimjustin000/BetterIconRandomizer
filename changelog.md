@@ -1,4 +1,7 @@
 # Better Icon Randomizer Changelog
+## v1.3.9-beta.1 (2024-06-08)
+- Fixed a few things
+
 ## v1.3.8 (2024-06-07)
 - Tweaked the popup menu
 - Ported to Geometry Dash v2.206
