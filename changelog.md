@@ -1,4 +1,7 @@
 # Better Icon Randomizer Changelog
+## v1.3.9 (2024-06-14)
+- Finalized the release of v1.3.9
+
 ## v1.3.9-beta.1 (2024-06-08)
 - Fixed a few things
 

@@ -31,7 +31,7 @@ void BetterIconRandomizer::setupUnlocked() {
 
 void BetterIconRandomizer::setupUnlockedIcons(IconType iconType) {
     auto gameManager = GameManager::sharedState();
-    auto& vec = unlocked[gameManager->iconTypeToUnlockType(iconType)];
+    auto& vec = UNLOCKED[gameManager->iconTypeToUnlockType(iconType)];
     vec.clear();
     auto amount = iconType == IconType::Item ? 20 : gameManager->countForType(iconType);
     for (int i = iconType == IconType::Item ? 18 : 1; i <= amount; i++) {
@@ -41,7 +41,7 @@ void BetterIconRandomizer::setupUnlockedIcons(IconType iconType) {
 
 void BetterIconRandomizer::setupUnlockedColors(UnlockType unlockType) {
     auto gameManager = GameManager::sharedState();
-    auto& vec = unlocked[unlockType];
+    auto& vec = UNLOCKED[unlockType];
     vec.clear();
     for (int i = 0; i < 107; i++) {
         if (gameManager->isColorUnlocked(i, unlockType)) vec.push_back(i);
@@ -49,7 +49,7 @@ void BetterIconRandomizer::setupUnlockedColors(UnlockType unlockType) {
 }
 
 int BetterIconRandomizer::randomize(UnlockType unlockType, bool randomizeGlow) {
-    auto& vec = unlocked[unlockType];
+    auto& vec = UNLOCKED[unlockType];
     if (unlockType == UnlockType::GJItem) {
         auto gameStatsManager = GameStatsManager::sharedState();
         for (int i = 0; i < vec.size(); i++) {

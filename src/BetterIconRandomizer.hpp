@@ -4,7 +4,7 @@ using namespace geode::prelude;
 
 class BetterIconRandomizer {
 private:
-    inline static std::map<UnlockType, std::vector<int>> unlocked = {
+    inline static std::map<UnlockType, std::vector<int>> UNLOCKED = {
         { UnlockType::Cube, {} },
         { UnlockType::Col1, {} },
         { UnlockType::Col2, {} },
