@@ -14,8 +14,8 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
             ButtonColorSettingValue::randomColor = color == ButtonColor::Random ? static_cast<ButtonColor>(BetterIconRandomizer::randomNumber(1, 5)) : color;
         }
 
-        auto randomizeBtn = CCMenuItemExt::createSpriteExtra(CCSprite::createWithSpriteFrameName(Mod::get()->expandSpriteName(fmt::format("BIR_randomBtn_{:02d}_001.png",
-            static_cast<int>(ButtonColorSettingValue::randomColor)).c_str())), [this](auto) { BIRSelectPopup::create(this)->show(); });
+        auto randomizeBtn = CCMenuItemExt::createSpriteExtra(CCSprite::createWithSpriteFrameName(fmt::format("BIR_randomBtn_{:02d}_001.png"_spr,
+            static_cast<int>(ButtonColorSettingValue::randomColor)).c_str()), [this](auto) { BIRSelectPopup::create(this)->show(); });
         randomizeBtn->setID("select-randomize-button"_spr);
         auto shardsMenu = getChildByID("shards-menu");
         shardsMenu->addChild(randomizeBtn);
