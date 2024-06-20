@@ -1,4 +1,7 @@
 # Better Icon Randomizer Changelog
+## v1.4.0 (2024-06-20)
+- Added compatibility with the mod "Separate Dual Icons" by Weebify
+
 ## v1.3.9 (2024-06-14)
 - Finalized the release of v1.3.9
 

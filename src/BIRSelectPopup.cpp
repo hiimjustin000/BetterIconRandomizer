@@ -13,7 +13,7 @@ BIRSelectPopup* BIRSelectPopup::create(GJGarageLayer* garageLayer) {
 }
 
 bool BIRSelectPopup::setup(GJGarageLayer* garageLayer) {
-    setTitle("Select Modes to Randomize");
+    setTitle("Select Icons to Randomize");
 
     m_garageLayer = garageLayer;
 
@@ -49,11 +49,13 @@ bool BIRSelectPopup::setup(GJGarageLayer* garageLayer) {
     m_mainLayer->addChild(m_colorMenu);
 
     auto gameManager = GameManager::sharedState();
+    auto separateDualIcons = Loader::get()->getLoadedMod("weebify.separate_dual_icons");
+    auto dual = separateDualIcons ? Loader::get()->getLoadedMod("weebify.separate_dual_icons")->getSavedValue("2pselected", false) : false;
     m_colorToggles = CCArray::create();
     m_colorToggles->retain();
-    createColorToggle("1", gameManager->colorForIdx(gameManager->getPlayerColor()));
-    createColorToggle("2", gameManager->colorForIdx(gameManager->getPlayerColor2()));
-    createColorToggle("G", gameManager->colorForIdx(gameManager->getPlayerGlowColor()));
+    createColorToggle("1", gameManager->colorForIdx(dual ? separateDualIcons->getSavedValue("color1", 0) : gameManager->getPlayerColor()));
+    createColorToggle("2", gameManager->colorForIdx(dual ? separateDualIcons->getSavedValue("color2", 0) : gameManager->getPlayerColor2()));
+    createColorToggle("G", gameManager->colorForIdx(dual ? separateDualIcons->getSavedValue("colorglow", 0) : gameManager->getPlayerGlowColor()));
 
     m_colorMenu->updateLayout();
 
@@ -159,68 +161,76 @@ void BIRSelectPopup::onAllToggle(CCArray* toggles, CCMenuItemToggler* allToggler
 
 void BIRSelectPopup::randomize() {
     auto enabledTypes = std::vector<IconType>();
+    auto separateDualIcons = Loader::get()->getLoadedMod("weebify.separate_dual_icons");
+    auto dual = separateDualIcons ? Loader::get()->getLoadedMod("weebify.separate_dual_icons")->getSavedValue("2pselected", false) : false;
 
     auto iconToggles = reinterpret_cast<CCMenuItemToggler**>(m_iconToggles->data->arr);
     if (iconToggles[0]->m_toggled) {
         enabledTypes.push_back(IconType::Cube);
-        m_garageLayer->m_iconPages[IconType::Cube] = (BetterIconRandomizer::randomize(UnlockType::Cube) - 1) / 36;
+        m_garageLayer->m_iconPages[IconType::Cube] = (BetterIconRandomizer::randomize(UnlockType::Cube, dual) - 1) / 36;
     }
     if (iconToggles[1]->m_toggled) {
         enabledTypes.push_back(IconType::Ship);
-        m_garageLayer->m_iconPages[IconType::Ship] = (BetterIconRandomizer::randomize(UnlockType::Ship) - 1) / 36;
+        m_garageLayer->m_iconPages[IconType::Ship] = (BetterIconRandomizer::randomize(UnlockType::Ship, dual) - 1) / 36;
     }
     if (iconToggles[2]->m_toggled) {
         enabledTypes.push_back(IconType::Ball);
-        m_garageLayer->m_iconPages[IconType::Ball] = (BetterIconRandomizer::randomize(UnlockType::Ball) - 1) / 36;
+        m_garageLayer->m_iconPages[IconType::Ball] = (BetterIconRandomizer::randomize(UnlockType::Ball, dual) - 1) / 36;
     }
     if (iconToggles[3]->m_toggled) {
         enabledTypes.push_back(IconType::Ufo);
-        m_garageLayer->m_iconPages[IconType::Ufo] = (BetterIconRandomizer::randomize(UnlockType::Bird) - 1) / 36;
+        m_garageLayer->m_iconPages[IconType::Ufo] = (BetterIconRandomizer::randomize(UnlockType::Bird, dual) - 1) / 36;
     }
     if (iconToggles[4]->m_toggled) {
         enabledTypes.push_back(IconType::Wave);
-        m_garageLayer->m_iconPages[IconType::Wave] = (BetterIconRandomizer::randomize(UnlockType::Dart) - 1) / 36;
+        m_garageLayer->m_iconPages[IconType::Wave] = (BetterIconRandomizer::randomize(UnlockType::Dart, dual) - 1) / 36;
     }
     if (iconToggles[5]->m_toggled) {
         enabledTypes.push_back(IconType::Robot);
-        m_garageLayer->m_iconPages[IconType::Robot] = (BetterIconRandomizer::randomize(UnlockType::Robot) - 1) / 36;
+        m_garageLayer->m_iconPages[IconType::Robot] = (BetterIconRandomizer::randomize(UnlockType::Robot, dual) - 1) / 36;
     }
     if (iconToggles[6]->m_toggled) {
         enabledTypes.push_back(IconType::Spider);
-        m_garageLayer->m_iconPages[IconType::Spider] = (BetterIconRandomizer::randomize(UnlockType::Spider) - 1) / 36;
+        m_garageLayer->m_iconPages[IconType::Spider] = (BetterIconRandomizer::randomize(UnlockType::Spider, dual) - 1) / 36;
     }
     if (iconToggles[7]->m_toggled) {
         enabledTypes.push_back(IconType::Swing);
-        m_garageLayer->m_iconPages[IconType::Swing] = (BetterIconRandomizer::randomize(UnlockType::Swing) - 1) / 36;
+        m_garageLayer->m_iconPages[IconType::Swing] = (BetterIconRandomizer::randomize(UnlockType::Swing, dual) - 1) / 36;
     }
     if (iconToggles[8]->m_toggled) {
         enabledTypes.push_back(IconType::Jetpack);
-        m_garageLayer->m_iconPages[IconType::Jetpack] = (BetterIconRandomizer::randomize(UnlockType::Jetpack) - 1) / 36;
+        m_garageLayer->m_iconPages[IconType::Jetpack] = (BetterIconRandomizer::randomize(UnlockType::Jetpack, dual) - 1) / 36;
     }
 
     auto specialToggles = reinterpret_cast<CCMenuItemToggler**>(m_specialToggles->data->arr);
     if (specialToggles[0]->m_toggled) {
-        BetterIconRandomizer::randomize(UnlockType::Streak);
-        BetterIconRandomizer::randomize(UnlockType::ShipFire);
-        BetterIconRandomizer::randomize(UnlockType::GJItem);
+        m_garageLayer->m_iconPages[IconType::Special] = (BetterIconRandomizer::randomize(UnlockType::Streak, dual) - 1) / 36;
+        m_garageLayer->m_iconPages[IconType::ShipFire] = (BetterIconRandomizer::randomize(UnlockType::ShipFire, dual) - 1) / 36;
+        BetterIconRandomizer::randomize(UnlockType::GJItem, dual);
     }
-    if (specialToggles[1]->m_toggled) m_garageLayer->m_iconPages[IconType::DeathEffect] = (BetterIconRandomizer::randomize(UnlockType::Death) - 1) / 36;
+    if (specialToggles[1]->m_toggled) m_garageLayer->m_iconPages[IconType::DeathEffect] = (BetterIconRandomizer::randomize(UnlockType::Death, dual) - 1) / 36;
 
     auto colorToggles = reinterpret_cast<CCMenuItemToggler**>(m_colorToggles->data->arr);
-    if (colorToggles[0]->m_toggled) BetterIconRandomizer::randomize(UnlockType::Col1);
-    if (colorToggles[1]->m_toggled) BetterIconRandomizer::randomize(UnlockType::Col2);
-    if (colorToggles[2]->m_toggled) BetterIconRandomizer::randomize(UnlockType::Col2, true);
+    if (colorToggles[0]->m_toggled) BetterIconRandomizer::randomize(UnlockType::Col1, dual);
+    if (colorToggles[1]->m_toggled) BetterIconRandomizer::randomize(UnlockType::Col2, dual);
+    if (colorToggles[2]->m_toggled) BetterIconRandomizer::randomize(UnlockType::Col2, dual, true);
 
     auto gameManager = GameManager::sharedState();
-    gameManager->m_playerIconType = enabledTypes.empty() ? gameManager->m_playerIconType :
+    auto randomType = enabledTypes.empty() ? dual ? (IconType)separateDualIcons->getSavedValue("lasttype", 0) : gameManager->m_playerIconType :
         enabledTypes[(size_t)BetterIconRandomizer::randomNumber(0, enabledTypes.size() - 1)];
-    auto playerFrame = gameManager->activeIconForType(gameManager->m_playerIconType);
-    m_garageLayer->updatePlayerColors();
-    m_garageLayer->m_playerObject->updatePlayerFrame(playerFrame, gameManager->m_playerIconType);
-    m_garageLayer->m_playerObject->setScale(gameManager->m_playerIconType == IconType::Jetpack ? 1.5f : 1.6f);
-    m_garageLayer->m_selectedIconType = gameManager->m_playerIconType;
+    if (dual) separateDualIcons->setSavedValue("lasttype", (int)randomType);
+    else gameManager->m_playerIconType = randomType;
+    auto playerFrame = BetterIconRandomizer::activeIconForType(randomType, dual);
+    auto simplePlayer = dual ? static_cast<SimplePlayer*>(m_garageLayer->getChildByID("player2-icon")) : m_garageLayer->m_playerObject;
+    simplePlayer->setScale(randomType == IconType::Jetpack ? 1.5f : 1.6f);
+    simplePlayer->setColor(gameManager->colorForIdx(dual ? separateDualIcons->getSavedValue("color1", 0) : gameManager->getPlayerColor()));
+    simplePlayer->setSecondColor(gameManager->colorForIdx(dual ? separateDualIcons->getSavedValue("color2", 0) : gameManager->getPlayerColor2()));
+    simplePlayer->setGlowOutline(gameManager->colorForIdx(dual ? separateDualIcons->getSavedValue("colorglow", 0) : gameManager->getPlayerGlowColor()));
+    if (dual ? !separateDualIcons->getSavedValue("glow", false) : !gameManager->getPlayerGlow()) simplePlayer->disableGlowOutline();
+    simplePlayer->updatePlayerFrame(playerFrame, randomType);
+    m_garageLayer->m_selectedIconType = randomType;
     m_garageLayer->m_iconID = playerFrame;
-    m_garageLayer->selectTab(m_garageLayer->m_selectedIconType);
+    m_garageLayer->selectTab(randomType);
     onClose(nullptr);
 }
 

@@ -11,6 +11,39 @@ int BetterIconRandomizer::randomNumber(int start, int end) {
     return distribute(generator);
 }
 
+int BetterIconRandomizer::activeIconForType(IconType type, bool dual) {
+    auto gameManager = GameManager::sharedState();
+    auto separateDualIcons = Loader::get()->getLoadedMod("weebify.separate_dual_icons");
+    switch (type) {
+        case IconType::Cube:
+            return dual ? separateDualIcons->getSavedValue("cube", 1) : gameManager->getPlayerFrame();
+        case IconType::Ship:
+            return dual ? separateDualIcons->getSavedValue("ship", 1) : gameManager->getPlayerShip();
+        case IconType::Ball:
+            return dual ? separateDualIcons->getSavedValue("roll", 1) : gameManager->getPlayerBall();
+        case IconType::Ufo:
+            return dual ? separateDualIcons->getSavedValue("bird", 1) : gameManager->getPlayerBird();
+        case IconType::Wave:
+            return dual ? separateDualIcons->getSavedValue("dart", 1) : gameManager->getPlayerDart();
+        case IconType::Robot:
+            return dual ? separateDualIcons->getSavedValue("robot", 1) : gameManager->getPlayerRobot();
+        case IconType::Spider:
+            return dual ? separateDualIcons->getSavedValue("spider", 1) : gameManager->getPlayerSpider();
+        case IconType::Special:
+            return dual ? separateDualIcons->getSavedValue("trail", 1) : gameManager->getPlayerStreak();
+        case IconType::DeathEffect:
+            return dual ? separateDualIcons->getSavedValue("death", 1) : gameManager->getPlayerDeathEffect();
+        case IconType::Swing:
+            return dual ? separateDualIcons->getSavedValue("swing", 1) : gameManager->getPlayerSwing();
+        case IconType::Jetpack:
+            return dual ? separateDualIcons->getSavedValue("jetpack", 1) : gameManager->getPlayerJetpack();
+        case IconType::ShipFire:
+            return dual ? separateDualIcons->getSavedValue("shiptrail", 1) : gameManager->getPlayerShipFire();
+        default:
+            return 0;
+    }
+}
+
 void BetterIconRandomizer::setupUnlocked() {
     setupUnlockedIcons(IconType::Cube);
     setupUnlockedColors(UnlockType::Col1);
@@ -48,7 +81,7 @@ void BetterIconRandomizer::setupUnlockedColors(UnlockType unlockType) {
     }
 }
 
-int BetterIconRandomizer::randomize(UnlockType unlockType, bool randomizeGlow) {
+int BetterIconRandomizer::randomize(UnlockType unlockType, bool dual, bool randomizeGlow) {
     auto& vec = UNLOCKED[unlockType];
     if (unlockType == UnlockType::GJItem) {
         auto gameStatsManager = GameStatsManager::sharedState();
@@ -58,53 +91,74 @@ int BetterIconRandomizer::randomize(UnlockType unlockType, bool randomizeGlow) {
         return 0;
     }
     auto gameManager = GameManager::sharedState();
+    auto separateDualIcons = Loader::get()->getLoadedMod("weebify.separate_dual_icons");
     auto num = vec[(size_t)randomNumber(0, vec.size() - 1)];
     switch (unlockType) {
         case UnlockType::Cube:
-            gameManager->setPlayerFrame(num);
+            if (dual) separateDualIcons->setSavedValue("cube", num);
+            else gameManager->setPlayerFrame(num);
             return num;
         case UnlockType::Col1:
-            gameManager->setPlayerColor(num);
+            if (dual) separateDualIcons->setSavedValue("color1", num);
+            else gameManager->setPlayerColor(num);
             return num;
         case UnlockType::Col2:
             if (randomizeGlow) {
-                gameManager->setPlayerColor3(num);
-                gameManager->setPlayerGlow(randomNumber(0, 1));
+                if (dual) {
+                    separateDualIcons->setSavedValue("colorglow", num);
+                    separateDualIcons->setSavedValue<bool>("glow", randomNumber(0, 1));
+                }
+                else {
+                    gameManager->setPlayerColor3(num);
+                    gameManager->setPlayerGlow(randomNumber(0, 1));
+                }
             }
+            else if (dual) separateDualIcons->setSavedValue("color2", num);
             else gameManager->setPlayerColor2(num);
             return num;
         case UnlockType::Ship:
-            gameManager->setPlayerShip(num);
+            if (dual) separateDualIcons->setSavedValue("ship", num);
+            else gameManager->setPlayerShip(num);
             return num;
         case UnlockType::Ball:
-            gameManager->setPlayerBall(num);
+            if (dual) separateDualIcons->setSavedValue("roll", num);
+            else gameManager->setPlayerBall(num);
             return num;
         case UnlockType::Bird:
-            gameManager->setPlayerBird(num);
+            if (dual) separateDualIcons->setSavedValue("bird", num);
+            else gameManager->setPlayerBird(num);
             return num;
         case UnlockType::Dart:
-            gameManager->setPlayerDart(num);
+            if (dual) separateDualIcons->setSavedValue("dart", num);
+            else gameManager->setPlayerDart(num);
             return num;
         case UnlockType::Robot:
-            gameManager->setPlayerRobot(num);
+            if (dual) separateDualIcons->setSavedValue("robot", num);
+            else gameManager->setPlayerRobot(num);
             return num;
         case UnlockType::Spider:
-            gameManager->setPlayerSpider(num);
+            if (dual) separateDualIcons->setSavedValue("spider", num);
+            else gameManager->setPlayerSpider(num);
             return num;
         case UnlockType::Streak:
-            gameManager->setPlayerStreak(num);
+            if (dual) separateDualIcons->setSavedValue("trail", num);
+            else gameManager->setPlayerStreak(num);
             return num;
         case UnlockType::Death:
-            gameManager->setPlayerDeathEffect(num);
+            if (dual) separateDualIcons->setSavedValue("death", num);
+            else gameManager->setPlayerDeathEffect(num);
             return num;
         case UnlockType::Swing:
-            gameManager->setPlayerSwing(num);
+            if (dual) separateDualIcons->setSavedValue("swing", num);
+            else gameManager->setPlayerSwing(num);
             return num;
         case UnlockType::Jetpack:
-            gameManager->setPlayerJetpack(num);
+            if (dual) separateDualIcons->setSavedValue("jetpack", num);
+            else gameManager->setPlayerJetpack(num);
             return num;
         case UnlockType::ShipFire:
-            gameManager->setPlayerShipStreak(num);
+            if (dual) separateDualIcons->setSavedValue("shiptrail", num);
+            else gameManager->setPlayerShipStreak(num);
             return num;
         default:
             return 0;
