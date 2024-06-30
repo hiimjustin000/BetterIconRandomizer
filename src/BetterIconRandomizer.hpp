@@ -27,6 +27,6 @@ private:
 public:
     static int randomNumber(int, int);
     static void setupUnlocked();
-    static int randomize(UnlockType, bool, bool randomizeGlow = false);
-    static int activeIconForType(IconType, bool);
+    static int randomize(UnlockType, Mod*, bool randomizeGlow = false);
+    static int activeIconForType(IconType, Mod*);
 };

@@ -11,6 +11,8 @@ protected:
     CCMenuItemToggler* m_allColorsToggler;
     CCMenu* m_iconMenu;
     CCMenu* m_colorMenu;
+    Mod* m_separateDualIcons;
+    bool m_dual;
 
     bool setup(GJGarageLayer*) override;
     void createIconToggle(const char*, const char*);

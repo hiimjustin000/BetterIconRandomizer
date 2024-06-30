@@ -1,4 +1,10 @@
 # Better Icon Randomizer Changelog
+## v1.4.1 (2024-06-30)
+- Added dark purple and dark aqua button colors
+- Tweaked randomize button color setting display
+- Changed the logo again because I didn't like the last one
+- Revamped the about page
+
 ## v1.4.0 (2024-06-20)
 - Added compatibility with the mod "Separate Dual Icons" by Weebify
 

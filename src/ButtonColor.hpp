@@ -7,14 +7,16 @@ enum class ButtonColor {
     Pink,
     Blue,
     Cyan,
-    Gray
+    Gray,
+    DarkPurple,
+    DarkAqua
 };
 
 class ButtonColorSettingValue : public SettingValue {
 protected:
     ButtonColor m_value = ButtonColor::Random;
 public:
-    inline static ButtonColor randomColor = ButtonColor::Random;
+    inline static ButtonColor BUTTON_COLOR = ButtonColor::Random;
 
     ButtonColorSettingValue(std::string const& key, std::string const& modID, ButtonColor value) : SettingValue(key, modID), m_value(value) {}
     bool load(matjson::Value const& json) override;

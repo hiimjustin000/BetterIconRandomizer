@@ -11,9 +11,9 @@ int BetterIconRandomizer::randomNumber(int start, int end) {
     return distribute(generator);
 }
 
-int BetterIconRandomizer::activeIconForType(IconType type, bool dual) {
+int BetterIconRandomizer::activeIconForType(IconType type, Mod* separateDualIcons) {
     auto gameManager = GameManager::sharedState();
-    auto separateDualIcons = Loader::get()->getLoadedMod("weebify.separate_dual_icons");
+    auto dual = separateDualIcons ? separateDualIcons->getSavedValue("2pselected", false) : false;
     switch (type) {
         case IconType::Cube:
             return dual ? separateDualIcons->getSavedValue("cube", 1) : gameManager->getPlayerFrame();
@@ -81,7 +81,7 @@ void BetterIconRandomizer::setupUnlockedColors(UnlockType unlockType) {
     }
 }
 
-int BetterIconRandomizer::randomize(UnlockType unlockType, bool dual, bool randomizeGlow) {
+int BetterIconRandomizer::randomize(UnlockType unlockType, Mod* separateDualIcons, bool randomizeGlow) {
     auto& vec = UNLOCKED[unlockType];
     if (unlockType == UnlockType::GJItem) {
         auto gameStatsManager = GameStatsManager::sharedState();
@@ -91,7 +91,7 @@ int BetterIconRandomizer::randomize(UnlockType unlockType, bool dual, bool rando
         return 0;
     }
     auto gameManager = GameManager::sharedState();
-    auto separateDualIcons = Loader::get()->getLoadedMod("weebify.separate_dual_icons");
+    auto dual = separateDualIcons ? separateDualIcons->getSavedValue("2pselected", false) : false;
     auto num = vec[(size_t)randomNumber(0, vec.size() - 1)];
     switch (unlockType) {
         case UnlockType::Cube:
