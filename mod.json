@@ -1,11 +1,11 @@
 {
-    "geode": "3.1.1",
+    "geode": "3.2.0",
     "gd": {
         "android": "2.206",
         "win": "2.206",
         "mac": "2.206"
     },
-    "version": "v1.4.1",
+    "version": "v1.4.2",
     "id": "hiimjustin000.better_icon_randomizer",
     "name": "Better Icon Randomizer",
     "developer": "hiimjustin000",
@@ -15,6 +15,11 @@
         {
             "id": "geode.node-ids",
             "version": ">=v1.12.0",
+            "importance": "required"
+        },
+        {
+            "id": "hiimjustin000.icon_randomizer_api",
+            "version": ">=v1.0.0",
             "importance": "required"
         }
     ],

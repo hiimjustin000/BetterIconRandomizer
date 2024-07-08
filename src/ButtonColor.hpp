@@ -1,5 +1,7 @@
+#include <Geode/Geode.hpp>
 #include <Geode/loader/SettingNode.hpp>
-#include "BetterIconRandomizer.hpp"
+
+using namespace geode::prelude;
 
 enum class ButtonColor {
     Random,

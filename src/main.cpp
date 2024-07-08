@@ -1,3 +1,4 @@
+#include <hiimjustin000.icon_randomizer_api/include/IconRandomizer.hpp>
 #include "BIRSelectPopup.hpp"
 
 $on_mod(Loaded) {
@@ -11,7 +12,7 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
 
         if (ButtonColorSettingValue::BUTTON_COLOR == ButtonColor::Random) {
             auto color = Mod::get()->getSettingValue<ButtonColor>("randomize-button-color");
-            ButtonColorSettingValue::BUTTON_COLOR = color == ButtonColor::Random ? static_cast<ButtonColor>(BetterIconRandomizer::randomNumber(1, 7)) : color;
+            ButtonColorSettingValue::BUTTON_COLOR = color == ButtonColor::Random ? static_cast<ButtonColor>(IconRandomizer::random(1, 7)) : color;
         }
 
         auto randomizeBtn = CCMenuItemExt::createSpriteExtra(CCSprite::createWithSpriteFrameName(fmt::format("BIR_randomBtn_{:02d}_001.png"_spr,
@@ -21,7 +22,7 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
         shardsMenu->addChild(randomizeBtn);
         shardsMenu->updateLayout();
 
-        BetterIconRandomizer::setupUnlocked();
+        IconRandomizer::init();
         return true;
     }
 };

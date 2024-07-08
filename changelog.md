@@ -1,4 +1,7 @@
 # Better Icon Randomizer Changelog
+## v1.4.2 (2024-07-07)
+- Moved icon randomization logic to Icon Randomizer API
+
 ## v1.4.1 (2024-06-30)
 - Added dark purple and dark aqua button colors
 - Tweaked randomize button color setting display
