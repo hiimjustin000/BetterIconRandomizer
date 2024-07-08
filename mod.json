@@ -19,7 +19,7 @@
         },
         {
             "id": "hiimjustin000.icon_randomizer_api",
-            "version": ">=v1.0.0",
+            "version": ">=v1.0.1",
             "importance": "required"
         }
     ],
