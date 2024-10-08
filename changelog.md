@@ -1,4 +1,8 @@
 # Better Icon Randomizer Changelog
+## v1.4.3 (2024-10-08)
+- Added compatibility with the mod "More Icons" by me
+- Changed randomize button color setting to the Settings V3 API
+
 ## v1.4.2 (2024-07-07)
 - Moved icon randomization logic to Icon Randomizer API
 

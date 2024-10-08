@@ -1,16 +1,15 @@
 {
-    "geode": "3.2.0",
+    "geode": "3.8.1",
     "gd": {
         "android": "2.206",
         "win": "2.206",
         "mac": "2.206"
     },
-    "version": "v1.4.2",
+    "version": "v1.4.3",
     "id": "hiimjustin000.better_icon_randomizer",
     "name": "Better Icon Randomizer",
     "developer": "hiimjustin000",
     "description": "A mod based on randomizing icons and colors.",
-    "repository": "https://github.com/hiimjustin000/BetterIconRandomizer",
     "dependencies": [
         {
             "id": "geode.node-ids",
@@ -19,7 +18,7 @@
         },
         {
             "id": "hiimjustin000.icon_randomizer_api",
-            "version": ">=v1.0.1",
+            "version": ">=v1.1.2",
             "importance": "required"
         }
     ],
@@ -35,8 +34,23 @@
     },
     "settings": {
         "randomize-button-color": {
-            "type": "custom"
+            "name": "Randomize Button Color (OLD)",
+            "description": "The color of the randomize button. Use \"Randomize Button Color\" instead.",
+            "type": "int",
+            "default": 0
+        },
+        "randomize-button-color-new": {
+            "name": "Randomize Button Color",
+            "description": "The color of the randomize button.",
+            "type": "string",
+            "default": "Random",
+            "one-of": ["Random", "Green", "Pink", "Blue", "Cyan", "Gray", "Dark Purple", "Dark Aqua"]
         }
+    },
+    "links": {
+        "community": "https://discord.gg/QVKmbvBXA7",
+        "source": "https://github.com/hiimjustin000/BetterIconRandomizer",
+        "homepage": "https://www.hiimjustin000.com"
     },
     "tags": [
         "customization",

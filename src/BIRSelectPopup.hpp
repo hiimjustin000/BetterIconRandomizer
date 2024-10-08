@@ -1,4 +1,6 @@
-#include "ButtonColor.hpp"
+#include <Geode/Geode.hpp>
+
+using namespace geode::prelude;
 
 class BIRSelectPopup : public Popup<GJGarageLayer*> {
 protected:
@@ -25,5 +27,5 @@ public:
 
     void randomize();
 
-    ~BIRSelectPopup();
+    ~BIRSelectPopup() override;
 };

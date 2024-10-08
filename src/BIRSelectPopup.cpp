@@ -130,7 +130,7 @@ void BIRSelectPopup::createColorToggle(const char* label, ccColor3B color) {
     auto colorSpriteOn = CCSprite::createWithSpriteFrameName("player_special_01_001.png");
     colorSpriteOn->setColor(color);
     colorSpriteOn->addChild(colorLabelOn);
-    auto toggler = CCMenuItemExt::createToggler(colorSpriteOff, colorSpriteOn, [this](auto sender) { onToggle(m_colorToggles, sender, m_allColorsToggler); });
+    auto toggler = CCMenuItemExt::createToggler(colorSpriteOn, colorSpriteOff, [this](auto sender) { onToggle(m_colorToggles, sender, m_allColorsToggler); });
     colorLabelOff->setPosition(colorSpriteOff->getPosition());
     colorLabelOn->setPosition(colorSpriteOn->getPosition());
     m_colorMenu->addChild(toggler);
@@ -140,9 +140,8 @@ void BIRSelectPopup::createColorToggle(const char* label, ccColor3B color) {
 void BIRSelectPopup::onToggle(CCArray* toggles, CCMenuItemToggler* toggler, CCMenuItemToggler* allToggler) {
     toggler->m_toggled = !toggler->m_toggled;
     auto toggled = true;
-    auto allToggles = reinterpret_cast<CCMenuItemToggler**>(toggles->data->arr);
-    for (int i = 0; i < toggles->count(); i++) {
-        if (!allToggles[i]->m_toggled) {
+    for (auto toggle : CCArrayExt<CCMenuItemToggler*>(toggles)) {
+        if (!toggle->m_toggled) {
             toggled = false;
             break;
         }
@@ -152,65 +151,83 @@ void BIRSelectPopup::onToggle(CCArray* toggles, CCMenuItemToggler* toggler, CCMe
 }
 
 void BIRSelectPopup::onAllToggle(CCArray* toggles, CCMenuItemToggler* allToggler) {
-    auto allToggles = reinterpret_cast<CCMenuItemToggler**>(toggles->data->arr);
-    for (int i = 0; i < toggles->count(); i++) {
-        allToggles[i]->toggle(!allToggler->m_toggled);
+    for (auto toggle : CCArrayExt<CCMenuItemToggler*>(toggles)) {
+        toggle->toggle(!allToggler->m_toggled);
     }
 }
 
 void BIRSelectPopup::randomize() {
-    auto enabledTypes = std::vector<IconType>();
+    std::vector<IconType> enabledTypes;
+    std::map<IconType, bool> moreIconsTypes;
 
-    auto iconToggles = reinterpret_cast<CCMenuItemToggler**>(m_iconToggles->data->arr);
-    if (iconToggles[0]->m_toggled) {
+    if (static_cast<CCMenuItemToggler*>(m_iconToggles->objectAtIndex(0))->m_toggled) {
         enabledTypes.push_back(IconType::Cube);
-        m_garageLayer->m_iconPages[IconType::Cube] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_CUBE, m_dual) - 1) / 36;
+        auto num = IconRandomizer::randomize(ICON_RANDOMIZER_API_CUBE, m_dual);
+        if (num > 0) m_garageLayer->m_iconPages[IconType::Cube] = (num - 1) / 36;
+        else moreIconsTypes[IconType::Cube] = true;
     }
-    if (iconToggles[1]->m_toggled) {
+    if (static_cast<CCMenuItemToggler*>(m_iconToggles->objectAtIndex(1))->m_toggled) {
         enabledTypes.push_back(IconType::Ship);
-        m_garageLayer->m_iconPages[IconType::Ship] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_SHIP, m_dual) - 1) / 36;
+        auto num = IconRandomizer::randomize(ICON_RANDOMIZER_API_SHIP, m_dual);
+        if (num > 0) m_garageLayer->m_iconPages[IconType::Ship] = (num - 1) / 36;
+        else moreIconsTypes[IconType::Ship] = true;
     }
-    if (iconToggles[2]->m_toggled) {
+    if (static_cast<CCMenuItemToggler*>(m_iconToggles->objectAtIndex(2))->m_toggled) {
         enabledTypes.push_back(IconType::Ball);
-        m_garageLayer->m_iconPages[IconType::Ball] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_BALL, m_dual) - 1) / 36;
+        auto num = IconRandomizer::randomize(ICON_RANDOMIZER_API_BALL, m_dual);
+        if (num > 0) m_garageLayer->m_iconPages[IconType::Ball] = (num - 1) / 36;
+        else moreIconsTypes[IconType::Ball] = true;
     }
-    if (iconToggles[3]->m_toggled) {
+    if (static_cast<CCMenuItemToggler*>(m_iconToggles->objectAtIndex(3))->m_toggled) {
         enabledTypes.push_back(IconType::Ufo);
-        m_garageLayer->m_iconPages[IconType::Ufo] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_UFO, m_dual) - 1) / 36;
+        auto num = IconRandomizer::randomize(ICON_RANDOMIZER_API_UFO, m_dual);
+        if (num > 0) m_garageLayer->m_iconPages[IconType::Ufo] = (num - 1) / 36;
+        else moreIconsTypes[IconType::Ufo] = true;
     }
-    if (iconToggles[4]->m_toggled) {
+    if (static_cast<CCMenuItemToggler*>(m_iconToggles->objectAtIndex(4))->m_toggled) {
         enabledTypes.push_back(IconType::Wave);
-        m_garageLayer->m_iconPages[IconType::Wave] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_WAVE, m_dual) - 1) / 36;
+        auto num = IconRandomizer::randomize(ICON_RANDOMIZER_API_WAVE, m_dual);
+        if (num > 0) m_garageLayer->m_iconPages[IconType::Wave] = (num - 1) / 36;
+        else moreIconsTypes[IconType::Wave] = true;
     }
-    if (iconToggles[5]->m_toggled) {
+    if (static_cast<CCMenuItemToggler*>(m_iconToggles->objectAtIndex(5))->m_toggled) {
         enabledTypes.push_back(IconType::Robot);
-        m_garageLayer->m_iconPages[IconType::Robot] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_ROBOT, m_dual) - 1) / 36;
+        auto num = IconRandomizer::randomize(ICON_RANDOMIZER_API_ROBOT, m_dual);
+        if (num > 0) m_garageLayer->m_iconPages[IconType::Robot] = (num - 1) / 36;
+        else moreIconsTypes[IconType::Robot] = true;
     }
-    if (iconToggles[6]->m_toggled) {
+    if (static_cast<CCMenuItemToggler*>(m_iconToggles->objectAtIndex(6))->m_toggled) {
         enabledTypes.push_back(IconType::Spider);
-        m_garageLayer->m_iconPages[IconType::Spider] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_SPIDER, m_dual) - 1) / 36;
+        auto num = IconRandomizer::randomize(ICON_RANDOMIZER_API_SPIDER, m_dual);
+        if (num > 0) m_garageLayer->m_iconPages[IconType::Spider] = (num - 1) / 36;
+        else moreIconsTypes[IconType::Spider] = true;
     }
-    if (iconToggles[7]->m_toggled) {
+    if (static_cast<CCMenuItemToggler*>(m_iconToggles->objectAtIndex(7))->m_toggled) {
         enabledTypes.push_back(IconType::Swing);
-        m_garageLayer->m_iconPages[IconType::Swing] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_SWING, m_dual) - 1) / 36;
+        auto num = IconRandomizer::randomize(ICON_RANDOMIZER_API_SWING, m_dual);
+        if (num > 0) m_garageLayer->m_iconPages[IconType::Swing] = (num - 1) / 36;
+        else moreIconsTypes[IconType::Swing] = true;
     }
-    if (iconToggles[8]->m_toggled) {
+    if (static_cast<CCMenuItemToggler*>(m_iconToggles->objectAtIndex(8))->m_toggled) {
         enabledTypes.push_back(IconType::Jetpack);
-        m_garageLayer->m_iconPages[IconType::Jetpack] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_JETPACK, m_dual) - 1) / 36;
+        auto num = IconRandomizer::randomize(ICON_RANDOMIZER_API_JETPACK, m_dual);
+        if (num > 0) m_garageLayer->m_iconPages[IconType::Jetpack] = (num - 1) / 36;
+        else moreIconsTypes[IconType::Jetpack] = true;
     }
 
-    auto specialToggles = reinterpret_cast<CCMenuItemToggler**>(m_specialToggles->data->arr);
-    if (specialToggles[0]->m_toggled) {
-        m_garageLayer->m_iconPages[IconType::Special] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_TRAIL, m_dual) - 1) / 36;
+    if (static_cast<CCMenuItemToggler*>(m_specialToggles->objectAtIndex(0))->m_toggled) {
+        auto num = IconRandomizer::randomize(ICON_RANDOMIZER_API_TRAIL, m_dual);
+        if (num > 0) m_garageLayer->m_iconPages[IconType::Special] = (num - 1) / 36;
+        else moreIconsTypes[IconType::Special] = true;
         m_garageLayer->m_iconPages[IconType::ShipFire] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_SHIP_FIRE, m_dual) - 1) / 36;
         IconRandomizer::randomize(ICON_RANDOMIZER_API_ANIMATION, m_dual);
     }
-    if (specialToggles[1]->m_toggled) m_garageLayer->m_iconPages[IconType::DeathEffect] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_DEATH_EFFECT, m_dual) - 1) / 36;
+    if (static_cast<CCMenuItemToggler*>(m_specialToggles->objectAtIndex(1))->m_toggled)
+        m_garageLayer->m_iconPages[IconType::DeathEffect] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_DEATH_EFFECT, m_dual) - 1) / 36;
 
-    auto colorToggles = reinterpret_cast<CCMenuItemToggler**>(m_colorToggles->data->arr);
-    if (colorToggles[0]->m_toggled) IconRandomizer::randomize(ICON_RANDOMIZER_API_COLOR_1, m_dual);
-    if (colorToggles[1]->m_toggled) IconRandomizer::randomize(ICON_RANDOMIZER_API_COLOR_2, m_dual);
-    if (colorToggles[2]->m_toggled) {
+    if (static_cast<CCMenuItemToggler*>(m_colorToggles->objectAtIndex(0))->m_toggled) IconRandomizer::randomize(ICON_RANDOMIZER_API_COLOR_1, m_dual);
+    if (static_cast<CCMenuItemToggler*>(m_colorToggles->objectAtIndex(1))->m_toggled) IconRandomizer::randomize(ICON_RANDOMIZER_API_COLOR_2, m_dual);
+    if (static_cast<CCMenuItemToggler*>(m_colorToggles->objectAtIndex(2))->m_toggled) {
         IconRandomizer::randomize(ICON_RANDOMIZER_API_GLOW_COLOR, m_dual);
         IconRandomizer::randomize(ICON_RANDOMIZER_API_GLOW, m_dual);
     }
@@ -218,9 +235,12 @@ void BIRSelectPopup::randomize() {
     auto gameManager = GameManager::sharedState();
     auto randomType = enabledTypes.empty() ? m_dual ? (IconType)m_separateDualIcons->getSavedValue("lasttype", 0) : gameManager->m_playerIconType :
         enabledTypes[(size_t)IconRandomizer::random(0, enabledTypes.size() - 1)];
-    if (m_dual) m_separateDualIcons->setSavedValue("lasttype", (int)randomType);
+    if (m_dual) {
+        m_separateDualIcons->setSavedValue("lastmode", (int)randomType);
+        m_separateDualIcons->setSavedValue("lasttype", (int)randomType);
+    }
     else gameManager->m_playerIconType = randomType;
-    auto playerFrame = IconRandomizer::active(IconRandomizer::fromIconType(randomType), m_dual);
+    auto playerFrame = IconRandomizer::active(IconRandomizer::randomizeTypeFromIconType(randomType), m_dual);
     auto simplePlayer = m_dual ? static_cast<SimplePlayer*>(m_garageLayer->getChildByID("player2-icon")) : m_garageLayer->m_playerObject;
     simplePlayer->setScale(randomType == IconType::Jetpack ? 1.5f : 1.6f);
     simplePlayer->setColor(gameManager->colorForIdx(IconRandomizer::active(ICON_RANDOMIZER_API_COLOR_1, m_dual)));
@@ -230,7 +250,42 @@ void BIRSelectPopup::randomize() {
     simplePlayer->updatePlayerFrame(playerFrame, randomType);
     m_garageLayer->m_selectedIconType = randomType;
     m_garageLayer->m_iconID = playerFrame;
-    m_garageLayer->selectTab(randomType);
+    m_garageLayer->onSelectTab(m_garageLayer->getChildByID("category-menu")->getChildByTag((int)randomType));
+    if (auto moreIconsNav = m_garageLayer->getChildByID("hiimjustin000.more_icons/navdot-menu")) {
+        if (moreIconsTypes[randomType]) {
+            std::string iconKey;
+            switch (randomType) {
+                case IconType::Cube: iconKey = "icon"; break;
+                case IconType::Ship: iconKey = "ship"; break;
+                case IconType::Ball: iconKey = "ball"; break;
+                case IconType::Ufo: iconKey = "ufo"; break;
+                case IconType::Wave: iconKey = "wave"; break;
+                case IconType::Robot: iconKey = "robot"; break;
+                case IconType::Spider: iconKey = "spider"; break;
+                case IconType::Swing: iconKey = "swing"; break;
+                case IconType::Jetpack: iconKey = "jetpack"; break;
+                case IconType::Special: iconKey = "trail"; break;
+                default: break;
+            }
+
+            auto moreIcons = Loader::get()->getLoadedMod("hiimjustin000.more_icons");
+            auto customIcon = moreIcons->getSavedValue<std::string>(m_dual ? iconKey + "-dual" : iconKey);
+            auto loadedIcons = moreIcons->getSavedValue<std::vector<std::string>>(iconKey + "s");
+            auto foundIcon = std::find(loadedIcons.begin(), loadedIcons.end(), customIcon);
+            if (foundIcon != loadedIcons.end()) {
+                auto navDot = static_cast<CCMenuItemSpriteExtra*>(moreIconsNav->getChildren()->objectAtIndex(std::distance(loadedIcons.begin(), foundIcon) / 36));
+                (navDot->m_pListener->*navDot->m_pfnSelector)(navDot);
+            }
+        }
+    }
+
+    if (!moreIconsTypes[randomType] && !enabledTypes.empty()) {
+        auto pageButton = m_garageLayer->m_pageButtons->objectAtIndex((m_garageLayer->m_iconID - 1) / 36);
+        if (pageButton) {
+            auto page = static_cast<CCMenuItemSpriteExtra*>(pageButton);
+            (page->m_pListener->*page->m_pfnSelector)(page);
+        }
+    }
     onClose(nullptr);
 }
 

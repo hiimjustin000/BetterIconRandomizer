@@ -4,11 +4,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64")
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
-project(BetterIconRandomizer VERSION 1.4.2)
+project(BetterIconRandomizer VERSION 1.4.3)
 
 add_library(${PROJECT_NAME} SHARED
     src/BIRSelectPopup.cpp
-    src/ButtonColor.cpp
     src/main.cpp
 )
 
