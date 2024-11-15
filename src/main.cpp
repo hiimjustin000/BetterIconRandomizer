@@ -1,6 +1,8 @@
 #include <hiimjustin000.icon_randomizer_api/include/IconRandomizer.hpp>
 #include "BIRSelectPopup.hpp"
 
+using namespace geode::prelude;
+
 enum class ButtonColor {
     Random,
     Green,
@@ -53,8 +55,10 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
         auto color = fromString(Mod::get()->getSettingValue<std::string>("randomize-button-color-new"));
         BUTTON_COLOR = color == ButtonColor::Random ? static_cast<ButtonColor>(IconRandomizer::random(1, 7)) : color;
 
-        auto randomizeBtn = CCMenuItemExt::createSpriteExtraWithFrameName(fmt::format("BIR_randomBtn_{:02d}_001.png"_spr,
-            static_cast<int>(BUTTON_COLOR)).c_str(), 1.0f, [this](auto) { BIRSelectPopup::create(this)->show(); });
+        auto randomizeBtn = CCMenuItemSpriteExtra::create(
+            CCSprite::createWithSpriteFrameName(fmt::format("BIR_randomBtn_{:02d}_001.png"_spr, static_cast<int>(BUTTON_COLOR)).c_str()),
+            this, menu_selector(BIRGarageLayer::onSelectRandomize)
+        );
         randomizeBtn->setID("select-randomize-button"_spr);
         auto shardsMenu = getChildByID("shards-menu");
         shardsMenu->addChild(randomizeBtn);
@@ -62,5 +66,9 @@ class $modify(BIRGarageLayer, GJGarageLayer) {
 
         IconRandomizer::init();
         return true;
+    }
+
+    void onSelectRandomize(CCObject*) {
+        BIRSelectPopup::create(this)->show();
     }
 };

@@ -1,5 +1,8 @@
+#include <Geode/loader/Dispatch.hpp>
 #include <hiimjustin000.icon_randomizer_api/include/IconRandomizer.hpp>
 #include "BIRSelectPopup.hpp"
+
+using namespace geode::prelude;
 
 BIRSelectPopup* BIRSelectPopup::create(GJGarageLayer* garageLayer) {
     auto ret = new BIRSelectPopup();
@@ -21,7 +24,7 @@ bool BIRSelectPopup::setup(GJGarageLayer* garageLayer) {
     m_iconMenu = CCMenu::create();
     m_iconMenu->setLayout(RowLayout::create()->setGap(6.0f));
     m_iconMenu->setContentSize({ 340.0f, 30.0f });
-    m_iconMenu->setPosition(175.0f, 100.0f);
+    m_iconMenu->setPosition({ 175.0f, 100.0f });
     m_mainLayer->addChild(m_iconMenu);
 
     m_iconToggles = CCArray::create();
@@ -46,7 +49,7 @@ bool BIRSelectPopup::setup(GJGarageLayer* garageLayer) {
     m_colorMenu = CCMenu::create();
     m_colorMenu->setLayout(RowLayout::create()->setGap(20.0f));
     m_colorMenu->setContentSize({ 150.0f, 40.0f });
-    m_colorMenu->setPosition(175.0f, 65.0f);
+    m_colorMenu->setPosition({ 175.0f, 65.0f });
     m_mainLayer->addChild(m_colorMenu);
 
     auto gameManager = GameManager::sharedState();
@@ -61,7 +64,7 @@ bool BIRSelectPopup::setup(GJGarageLayer* garageLayer) {
     auto allMenu = CCMenu::create();
     allMenu->setLayout(ColumnLayout::create()->setGap(6.0f)->setAxisReverse(true));
     allMenu->setContentSize({ 30.0f, 80.0f });
-    allMenu->setPosition(332.5f, 45.0f);
+    allMenu->setPosition({ 332.5f, 45.0f });
     m_mainLayer->addChild(allMenu);
 
     m_allIconsToggler = CCMenuItemExt::createTogglerWithStandardSprites(0.6f, [this](auto sender) { onAllToggle(m_iconToggles, sender); });
@@ -77,7 +80,7 @@ bool BIRSelectPopup::setup(GJGarageLayer* garageLayer) {
     allLabels->setLayout(ColumnLayout::create()->setGap(8.35f)->setCrossAxisLineAlignment(AxisAlignment::End)->setAxisReverse(true)->setAutoScale(false));
     allLabels->setContentSize({ 70.0f, 70.0f });
     allLabels->setAnchorPoint({ 1.0f, 0.5f });
-    allLabels->setPosition(320.0f, 45.0f);
+    allLabels->setPosition({ 320.0f, 45.0f });
     m_mainLayer->addChild(allLabels);
 
     auto iconsLabel = CCLabelBMFont::create("Icons", "bigFont.fnt");
@@ -93,7 +96,7 @@ bool BIRSelectPopup::setup(GJGarageLayer* garageLayer) {
     allLabels->updateLayout();
 
     auto randomizeButton = CCMenuItemExt::createSpriteExtra(ButtonSprite::create("Randomize", "goldFont.fnt", "GJ_button_01.png", 0.8f), [this](auto) { randomize(); });
-    randomizeButton->setPosition(175.0f, 25.0f);
+    randomizeButton->setPosition({ 175.0f, 25.0f });
     m_buttonMenu->addChild(randomizeButton);
 
     return true;
@@ -222,8 +225,11 @@ void BIRSelectPopup::randomize() {
         m_garageLayer->m_iconPages[IconType::ShipFire] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_SHIP_FIRE, m_dual) - 1) / 36;
         IconRandomizer::randomize(ICON_RANDOMIZER_API_ANIMATION, m_dual);
     }
-    if (static_cast<CCMenuItemToggler*>(m_specialToggles->objectAtIndex(1))->m_toggled)
-        m_garageLayer->m_iconPages[IconType::DeathEffect] = (IconRandomizer::randomize(ICON_RANDOMIZER_API_DEATH_EFFECT, m_dual) - 1) / 36;
+    if (static_cast<CCMenuItemToggler*>(m_specialToggles->objectAtIndex(1))->m_toggled) {
+        auto num = IconRandomizer::randomize(ICON_RANDOMIZER_API_DEATH_EFFECT, m_dual);
+        if (num > 0) m_garageLayer->m_iconPages[IconType::DeathEffect] = (num - 1) / 36;
+        else moreIconsTypes[IconType::DeathEffect] = true;
+    }
 
     if (static_cast<CCMenuItemToggler*>(m_colorToggles->objectAtIndex(0))->m_toggled) IconRandomizer::randomize(ICON_RANDOMIZER_API_COLOR_1, m_dual);
     if (static_cast<CCMenuItemToggler*>(m_colorToggles->objectAtIndex(1))->m_toggled) IconRandomizer::randomize(ICON_RANDOMIZER_API_COLOR_2, m_dual);
@@ -240,7 +246,7 @@ void BIRSelectPopup::randomize() {
         m_separateDualIcons->setSavedValue("lasttype", (int)randomType);
     }
     else gameManager->m_playerIconType = randomType;
-    auto playerFrame = IconRandomizer::active(IconRandomizer::randomizeTypeFromIconType(randomType), m_dual);
+    auto playerFrame = IconRandomizer::active(IconRandomizer::fromIconType(randomType), m_dual);
     auto simplePlayer = m_dual ? static_cast<SimplePlayer*>(m_garageLayer->getChildByID("player2-icon")) : m_garageLayer->m_playerObject;
     simplePlayer->setScale(randomType == IconType::Jetpack ? 1.5f : 1.6f);
     simplePlayer->setColor(gameManager->colorForIdx(IconRandomizer::active(ICON_RANDOMIZER_API_COLOR_1, m_dual)));
@@ -265,6 +271,7 @@ void BIRSelectPopup::randomize() {
                 case IconType::Swing: iconKey = "swing"; break;
                 case IconType::Jetpack: iconKey = "jetpack"; break;
                 case IconType::Special: iconKey = "trail"; break;
+                case IconType::DeathEffect: iconKey = "death"; break;
                 default: break;
             }
 
@@ -273,6 +280,7 @@ void BIRSelectPopup::randomize() {
             auto loadedIcons = moreIcons->getSavedValue<std::vector<std::string>>(iconKey + "s");
             auto foundIcon = std::find(loadedIcons.begin(), loadedIcons.end(), customIcon);
             if (foundIcon != loadedIcons.end()) {
+                DispatchEvent<SimplePlayer*, std::string, IconType>("hiimjustin000.more_icons/simple-player", simplePlayer, customIcon, randomType).post();
                 auto navDot = static_cast<CCMenuItemSpriteExtra*>(moreIconsNav->getChildren()->objectAtIndex(std::distance(loadedIcons.begin(), foundIcon) / 36));
                 (navDot->m_pListener->*navDot->m_pfnSelector)(navDot);
             }
@@ -280,8 +288,7 @@ void BIRSelectPopup::randomize() {
     }
 
     if (!moreIconsTypes[randomType] && !enabledTypes.empty()) {
-        auto pageButton = m_garageLayer->m_pageButtons->objectAtIndex((m_garageLayer->m_iconID - 1) / 36);
-        if (pageButton) {
+        if (auto pageButton = m_garageLayer->m_pageButtons->objectAtIndex((m_garageLayer->m_iconID - 1) / 36)) {
             auto page = static_cast<CCMenuItemSpriteExtra*>(pageButton);
             (page->m_pListener->*page->m_pfnSelector)(page);
         }

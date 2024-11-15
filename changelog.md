@@ -1,4 +1,7 @@
 # Better Icon Randomizer Changelog
+## v1.4.4-beta.1 (2024-11-13)
+- Ported to Geometry Dash v2.207
+
 ## v1.4.3 (2024-10-08)
 - Added compatibility with the mod "More Icons" by me
 - Changed randomize button color setting to the Settings V3 API
