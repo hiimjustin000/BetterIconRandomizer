@@ -1,5 +1,8 @@
 # Better Icon Randomizer Changelog
-## v1.4.4-beta.1 (2024-11-13)
+## v1.4.4 (2024-11-15)
+- Ported to Geode v4.0.0-beta.1
+
+## v1.4.4-beta.1 (2024-11-15)
 - Ported to Geometry Dash v2.207
 
 ## v1.4.3 (2024-10-08)
